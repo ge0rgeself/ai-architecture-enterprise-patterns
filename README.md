@@ -3,7 +3,7 @@
 **Production-tested architecture patterns for deploying AI/ML systems in regulated enterprises. Each pattern includes an interactive visualization you can play with in your browser.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Patterns](https://img.shields.io/badge/patterns-12-blue.svg)](#pattern-catalog)
+[![Gateway Variants](https://img.shields.io/badge/AI_Gateway_variants-12-blue.svg)](#pattern-01-unified-ai-gateway)
 [![Interactive](https://img.shields.io/badge/visualizations-interactive-purple.svg)](#how-it-works)
 
 ---
@@ -24,45 +24,47 @@ This repository collects architecture patterns designed and validated across 18+
 
 **Production deployment guide** - Comprehensive documentation covering component specs, deployment topology, security controls, regulatory mapping, implementation checklist, and cost model.
 
-### GitHub Pages Setup
+### GitHub Pages
 
-Interactive demos are hosted via GitHub Pages at `https://aman210122.github.io/ai-architecture-enterprise-patterns/`
+All interactive demos are live at `https://aman210122.github.io/ai-architecture-enterprise-patterns/`
 
 ---
 
-## Pattern Catalog
+## Pattern 01: Unified AI Gateway
 
-### Pattern 01: Unified AI Gateway
-
-Route all LLM and ML traffic through a single governance-aware control plane for policy enforcement, intelligent routing, and full observability.
+Route all LLM and ML traffic through a single governance-aware control plane for policy enforcement, intelligent routing, and full observability. **12 variants** covering every major cloud, platform, topology, and deployment model.
 
 **Cloud-native variants:**
 
-| Variant | Stack | Demo |
-|---------|-------|------|
-| [Azure Native](patterns/01-unified-ai-gateway/azure-native/) | Azure APIM + Azure OpenAI + Content Safety + Entra ID | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/01-unified-ai-gateway/azure-native/index.html) |
-| AWS Native | API Gateway + Bedrock + Guardrails for AI + IAM | Coming soon |
-| GCP Native | Apigee + Vertex AI + Gemini + Model Armor | Coming soon |
+| Variant | Stack | Cost/mo | Demo |
+|---------|-------|---------|------|
+| [Azure Native](patterns/01-unified-ai-gateway/azure-native/) | Azure APIM + Azure OpenAI + Content Safety + Entra ID | ~$900 | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/01-unified-ai-gateway/azure-native/index.html) |
+| [AWS Native](patterns/01-unified-ai-gateway/aws-native/) | API Gateway + Bedrock + Guardrails for AI + IAM | ~$850 | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/01-unified-ai-gateway/aws-native/index.html) |
+| [GCP Native](patterns/01-unified-ai-gateway/gcp-native/) | Apigee + Vertex AI + Gemini + Model Armor | ~$850 | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/01-unified-ai-gateway/gcp-native/index.html) |
 
 **Platform-native variants:**
 
-| Variant | Stack | Demo |
-|---------|-------|------|
-| [Databricks Native](patterns/01-unified-ai-gateway/databricks-native/) | Mosaic AI GW + FMAPI + Unity Catalog | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/01-unified-ai-gateway/databricks-native/index.html) |
-| Snowflake Native | Cortex + Snowpark + Arctic + Streamlit | Coming soon |
+| Variant | Stack | Cost/mo | Demo |
+|---------|-------|---------|------|
+| [Databricks Native](patterns/01-unified-ai-gateway/databricks-native/) | Mosaic AI GW + FMAPI + Unity Catalog | ~$800 | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/01-unified-ai-gateway/databricks-native/index.html) |
+| [Snowflake Native](patterns/01-unified-ai-gateway/snowflake-native/) | Cortex + Snowpark + Arctic + Streamlit | ~$700 | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/01-unified-ai-gateway/snowflake-native/index.html) |
 
 **Multi-platform variants:**
 
-| Variant | Stack | Demo |
-|---------|-------|------|
-| [Multi-Platform](patterns/01-unified-ai-gateway/multi-platform/) | Databricks + Azure AI Foundry + Snowflake | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/01-unified-ai-gateway/multi-platform/index.html) |
-| [Multi-Cloud](patterns/01-unified-ai-gateway/multi-cloud/) | Kong + Azure OpenAI + AWS Bedrock + GCP Vertex AI | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/01-unified-ai-gateway/multi-cloud/index.html) |
+| Variant | Stack | Cost/mo | Demo |
+|---------|-------|---------|------|
+| [Multi-Platform](patterns/01-unified-ai-gateway/multi-platform/) | Databricks + Azure AI Foundry + Snowflake | ~$1,400 | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/01-unified-ai-gateway/multi-platform/index.html) |
+| [Multi-Cloud](patterns/01-unified-ai-gateway/multi-cloud/) | Kong + Azure OpenAI + AWS Bedrock + GCP Vertex AI | ~$1,200 | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/01-unified-ai-gateway/multi-cloud/index.html) |
+| [Hybrid](patterns/01-unified-ai-gateway/hybrid/) | Cloud general + on-prem for sensitive data | ~$1,600 | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/01-unified-ai-gateway/hybrid/index.html) |
 
-**Self-hosted:**
+**Self-hosted and specialized:**
 
-| Variant | Stack | Demo |
-|---------|-------|------|
-| [Open Source](patterns/01-unified-ai-gateway/open-source/) | LiteLLM + vLLM/Ollama + Llama/Mistral | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/01-unified-ai-gateway/open-source/index.html) |
+| Variant | Stack | Cost/mo | Demo |
+|---------|-------|---------|------|
+| [Open Source](patterns/01-unified-ai-gateway/open-source/) | LiteLLM + vLLM/Ollama + Llama/Mistral | ~$400 | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/01-unified-ai-gateway/open-source/index.html) |
+| [Starter](patterns/01-unified-ai-gateway/starter/) | Single provider + reverse proxy + basic logging | ~$50-200 | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/01-unified-ai-gateway/starter/index.html) |
+| [Federated](patterns/01-unified-ai-gateway/federated/) | Multi-BU gateways + central governance plane | ~$2,000+ | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/01-unified-ai-gateway/federated/index.html) |
+| [Edge](patterns/01-unified-ai-gateway/edge/) | On-device SLM + local proxy + offline-capable | ~$100-300/device | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/01-unified-ai-gateway/edge/index.html) |
 
 ### Future Patterns
 
