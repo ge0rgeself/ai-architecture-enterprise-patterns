@@ -3,9 +3,10 @@
 **Production-tested architecture patterns for deploying AI/ML systems in regulated enterprises. Each pattern includes an interactive visualization you can play with in your browser.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Gateway Variants](https://img.shields.io/badge/AI_Gateway-12_variants-blue.svg)](#pattern-01-unified-ai-gateway)
-[![RAG Variants](https://img.shields.io/badge/RAG-10_variants-green.svg)](#pattern-02-rag-for-regulated-data)
-[![Interactive](https://img.shields.io/badge/22_visualizations-interactive-purple.svg)](#how-it-works)
+[![Gateway](https://img.shields.io/badge/AI_Gateway-12_variants-blue.svg)](#pattern-01-unified-ai-gateway)
+[![RAG](https://img.shields.io/badge/RAG-10_variants-green.svg)](#pattern-02-rag-for-regulated-data)
+[![Agents](https://img.shields.io/badge/Multi--Agent-6_variants-orange.svg)](#pattern-03-multi-agent-pipeline-with-safety-gates)
+[![Interactive](https://img.shields.io/badge/28_visualizations-interactive-purple.svg)](#how-it-works)
 
 ---
 
@@ -13,7 +14,7 @@
 
 Most AI architecture guides show you how to build a chatbot. They skip the hard parts: sensitive data routing, compliance gates, governance decay, multi-model orchestration, agent safety boundaries, and the reality that your LLM pipeline has to survive an audit.
 
-This repository collects architecture patterns designed and validated across 18+ years of enterprise architecture in regulated industries. Each pattern includes an interactive browser-based visualization with animated data flow, a production deployment guide, and governance metrics mapping.
+This repository collects architecture patterns designed and validated across 18+ years of enterprise architecture in regulated industries.
 
 **Industries:** Healthcare (HIPAA), Financial Services (SOX, PCI-DSS), Insurance, Government (FedRAMP), Legal, and any organization handling sensitive data under regulatory constraints.
 
@@ -21,11 +22,11 @@ This repository collects architecture patterns designed and validated across 18+
 
 ## How It Works
 
-**Interactive visualization** - Open the HTML file in any browser. Click scenario buttons to watch data flow through the architecture end-to-end. Click any section to expand and explore sub-components. No install, no dependencies.
+**Interactive visualization** - Open the HTML file in any browser. Click scenario buttons to watch data flow through the architecture. Click any section to expand sub-components. No install, no dependencies.
 
 ### GitHub Pages
 
-All 22 interactive demos are live at `https://aman210122.github.io/ai-architecture-enterprise-patterns/`
+All 28 interactive demos are live at `https://aman210122.github.io/ai-architecture-enterprise-patterns/`
 
 ---
 
@@ -69,38 +70,56 @@ Route all LLM and ML traffic through a single governance-aware control plane. **
 
 ## Pattern 02: RAG for Regulated Data
 
-Retrieval-augmented generation with compliance boundaries at every stage. **10 variants.** Each variant is cloud-agnostic with a [platform mapping table](patterns/02-rag-regulated-data/) for Azure, AWS, GCP, Databricks, and open-source stacks.
+Retrieval-augmented generation with compliance boundaries at every stage. **10 variants.** Cloud-agnostic with [platform mapping tables](patterns/02-rag-regulated-data/).
 
-**Core RAG architectures:**
-
-| Variant | Architecture | Demo |
-|---------|-------------|------|
-| [Standard RAG](patterns/02-rag-regulated-data/standard-rag/) | Vector search + chunking + generation with guardrails | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/02-rag-regulated-data/standard-rag/index.html) |
-| [GraphRAG](patterns/02-rag-regulated-data/graph-rag/) | Knowledge graph traversal + entity resolution | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/02-rag-regulated-data/graph-rag/index.html) |
-| [Agentic RAG](patterns/02-rag-regulated-data/agentic-rag/) | Self-correcting retrieval (CRAG / Self-RAG) | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/02-rag-regulated-data/agentic-rag/index.html) |
-| [Sensitive Data RAG](patterns/02-rag-regulated-data/sensitive-data-rag/) | PHI/PII-aware with zero-trust retrieval | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/02-rag-regulated-data/sensitive-data-rag/index.html) |
-
-**Specialized RAG architectures:**
+**Core RAG:**
 
 | Variant | Architecture | Demo |
 |---------|-------------|------|
-| [Conversational RAG](patterns/02-rag-regulated-data/conversational-rag/) | Multi-turn with conversation history + follow-up detection | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/02-rag-regulated-data/conversational-rag/index.html) |
-| [Hybrid SQL+Vector](patterns/02-rag-regulated-data/hybrid-sql-vector-rag/) | Text-to-SQL + vector search in a single query | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/02-rag-regulated-data/hybrid-sql-vector-rag/index.html) |
-| [Multimodal RAG](patterns/02-rag-regulated-data/multimodal-rag/) | Images, charts, medical scans + text retrieval | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/02-rag-regulated-data/multimodal-rag/index.html) |
-| [Multi-Source RAG](patterns/02-rag-regulated-data/multi-source-rag/) | Federated retrieval across platforms | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/02-rag-regulated-data/multi-source-rag/index.html) |
-| [Real-Time RAG](patterns/02-rag-regulated-data/realtime-rag/) | Streaming ingestion, seconds-to-searchable | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/02-rag-regulated-data/realtime-rag/index.html) |
-| [RAG Evaluation](patterns/02-rag-regulated-data/evaluation-rag/) | Automated quality testing + regression detection | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/02-rag-regulated-data/evaluation-rag/index.html) |
+| [Standard RAG](patterns/02-rag-regulated-data/standard-rag/) | Vector search + generation with guardrails | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/02-rag-regulated-data/standard-rag/index.html) |
+| [GraphRAG](patterns/02-rag-regulated-data/graph-rag/) | Knowledge graph + entity resolution | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/02-rag-regulated-data/graph-rag/index.html) |
+| [Agentic RAG](patterns/02-rag-regulated-data/agentic-rag/) | Self-correcting CRAG / Self-RAG | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/02-rag-regulated-data/agentic-rag/index.html) |
+| [Sensitive Data RAG](patterns/02-rag-regulated-data/sensitive-data-rag/) | PHI/PII-aware zero-trust retrieval | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/02-rag-regulated-data/sensitive-data-rag/index.html) |
+
+**Specialized RAG:**
+
+| Variant | Architecture | Demo |
+|---------|-------------|------|
+| [Conversational](patterns/02-rag-regulated-data/conversational-rag/) | Multi-turn with history + follow-up detection | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/02-rag-regulated-data/conversational-rag/index.html) |
+| [Hybrid SQL+Vector](patterns/02-rag-regulated-data/hybrid-sql-vector-rag/) | Text-to-SQL + vector search fusion | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/02-rag-regulated-data/hybrid-sql-vector-rag/index.html) |
+| [Multimodal](patterns/02-rag-regulated-data/multimodal-rag/) | Images, charts, DICOM + text | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/02-rag-regulated-data/multimodal-rag/index.html) |
+| [Multi-Source](patterns/02-rag-regulated-data/multi-source-rag/) | Federated retrieval across platforms | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/02-rag-regulated-data/multi-source-rag/index.html) |
+| [Real-Time](patterns/02-rag-regulated-data/realtime-rag/) | Streaming ingestion, seconds-to-searchable | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/02-rag-regulated-data/realtime-rag/index.html) |
+| [Evaluation](patterns/02-rag-regulated-data/evaluation-rag/) | Automated quality testing + regression | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/02-rag-regulated-data/evaluation-rag/index.html) |
+
+---
+
+## Pattern 03: Multi-Agent Pipeline with Safety Gates
+
+Chain specialized LLM agents with safety checkpoints between stages. **6 variants.** Cloud-agnostic with [platform mapping](patterns/03-multi-agent-safety-gates/).
+
+| Variant | Topology | Demo |
+|---------|---------|------|
+| [Linear Chain](patterns/03-multi-agent-safety-gates/linear-chain/) | Sequential agents with validation between each | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/03-multi-agent-safety-gates/linear-chain/index.html) |
+| [DAG Orchestration](patterns/03-multi-agent-safety-gates/dag-orchestration/) | Parallel agents with merge-point validation | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/03-multi-agent-safety-gates/dag-orchestration/index.html) |
+| [Hierarchical](patterns/03-multi-agent-safety-gates/hierarchical/) | Supervisor delegates to workers, validates outputs | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/03-multi-agent-safety-gates/hierarchical/index.html) |
+| [Consensus](patterns/03-multi-agent-safety-gates/consensus/) | Multiple agents vote, agreement mechanism decides | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/03-multi-agent-safety-gates/consensus/index.html) |
+| [Adversarial](patterns/03-multi-agent-safety-gates/adversarial-red-blue/) | Generator + critic for runtime red teaming | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/03-multi-agent-safety-gates/adversarial-red-blue/index.html) |
+| [Human-in-the-Loop](patterns/03-multi-agent-safety-gates/human-in-the-loop/) | Configurable human approval per risk tier | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/03-multi-agent-safety-gates/human-in-the-loop/index.html) |
 
 ---
 
 ### Future Patterns
 
-| # | Pattern | Status |
-|---|---------|--------|
-| 03 | Multi-Agent Pipeline with Safety Gates | Planned |
-| 04 | Governance-as-Architecture | Planned |
-| 05 | Contamination-Resistant Pipeline | Planned |
-| 06 | Risk-Tiered AI Deployment | Planned |
+| # | Pattern | Variants | Status |
+|---|---------|----------|--------|
+| 04 | Agentic AI with Tool Governance | MCP, A2A, Function Calling, Sandboxed | Planned |
+| 05 | LLMOps Pipeline | Azure, AWS, GCP, Databricks, Open Source | Planned |
+| 06 | Governance-as-Architecture | Embedded, Dashboard, Policy-as-Code, Decay Detection | Planned |
+| 07 | Contamination-Resistant Pipeline | Isolation, Validation, Canary, Rollback | Planned |
+| 08 | Compliance-Aware Data Routing | Azure, AWS, GCP, Multi-Cloud, On-Prem | Planned |
+| 09 | AI Evaluation & Red Teaming | Automated, RAGAS, LLM-as-Judge, Human, Safety Bench | Planned |
+| 10 | FinOps for AI | Azure, AWS, GCP, Multi-Cloud, Token-Level | Planned |
 
 ---
 
@@ -114,12 +133,6 @@ Every pattern includes quantitative metrics from [GAIF-4](https://github.com/ama
 | **CFR** | Policy violations in completed requests |
 | **EMR** | Dangerous content emerging at the pipeline level |
 | **GDR** | Governance effectiveness degrading over time |
-
----
-
-## Standards Mapping
-
-NIST AI RMF, EU AI Act, WHO AI Ethics, HIPAA, SOX, PCI-DSS, GDPR, FedRAMP
 
 ---
 
