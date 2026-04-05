@@ -5,8 +5,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Gateway](https://img.shields.io/badge/AI_Gateway-12_variants-blue.svg)](#pattern-01-unified-ai-gateway)
 [![RAG](https://img.shields.io/badge/RAG-10_variants-green.svg)](#pattern-02-rag-for-regulated-data)
-[![Agents](https://img.shields.io/badge/Multi--Agent-6_variants-orange.svg)](#pattern-03-multi-agent-pipeline-with-safety-gates)
-[![Interactive](https://img.shields.io/badge/28_visualizations-interactive-purple.svg)](#how-it-works)
+[![Agents](https://img.shields.io/badge/Multi--Agent-10_variants-orange.svg)](#pattern-03-multi-agent-pipeline-with-safety-gates)
+[![Interactive](https://img.shields.io/badge/32_visualizations-interactive-purple.svg)](#how-it-works)
 
 ---
 
@@ -26,7 +26,7 @@ This repository collects architecture patterns designed and validated across 18+
 
 ### GitHub Pages
 
-All 28 interactive demos are live at `https://aman210122.github.io/ai-architecture-enterprise-patterns/`
+All 32 interactive demos are live at `https://aman210122.github.io/ai-architecture-enterprise-patterns/`
 
 ---
 
@@ -96,16 +96,32 @@ Retrieval-augmented generation with compliance boundaries at every stage. **10 v
 
 ## Pattern 03: Multi-Agent Pipeline with Safety Gates
 
-Chain specialized LLM agents with safety checkpoints between stages. **6 variants.** Cloud-agnostic with [platform mapping](patterns/03-multi-agent-safety-gates/).
+Chain specialized LLM agents with safety checkpoints. **10 variants** covering every multi-agent orchestration topology. Cloud-agnostic with [platform mapping](patterns/03-multi-agent-safety-gates/).
+
+**Gate-based topologies:**
 
 | Variant | Topology | Demo |
 |---------|---------|------|
 | [Linear Chain](patterns/03-multi-agent-safety-gates/linear-chain/) | Sequential agents with validation between each | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/03-multi-agent-safety-gates/linear-chain/index.html) |
 | [DAG Orchestration](patterns/03-multi-agent-safety-gates/dag-orchestration/) | Parallel agents with merge-point validation | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/03-multi-agent-safety-gates/dag-orchestration/index.html) |
 | [Hierarchical](patterns/03-multi-agent-safety-gates/hierarchical/) | Supervisor delegates to workers, validates outputs | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/03-multi-agent-safety-gates/hierarchical/index.html) |
+| [Human-in-the-Loop](patterns/03-multi-agent-safety-gates/human-in-the-loop/) | Configurable human approval per risk tier | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/03-multi-agent-safety-gates/human-in-the-loop/index.html) |
+
+**Decision-based topologies:**
+
+| Variant | Topology | Demo |
+|---------|---------|------|
 | [Consensus](patterns/03-multi-agent-safety-gates/consensus/) | Multiple agents vote, agreement mechanism decides | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/03-multi-agent-safety-gates/consensus/index.html) |
 | [Adversarial](patterns/03-multi-agent-safety-gates/adversarial-red-blue/) | Generator + critic for runtime red teaming | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/03-multi-agent-safety-gates/adversarial-red-blue/index.html) |
-| [Human-in-the-Loop](patterns/03-multi-agent-safety-gates/human-in-the-loop/) | Configurable human approval per risk tier | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/03-multi-agent-safety-gates/human-in-the-loop/index.html) |
+| [Debate](patterns/03-multi-agent-safety-gates/debate/) | Two advocates argue, judge evaluates both sides | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/03-multi-agent-safety-gates/debate/index.html) |
+
+**Advanced topologies:**
+
+| Variant | Topology | Demo |
+|---------|---------|------|
+| [Reflection Loop](patterns/03-multi-agent-safety-gates/reflection-loop/) | Generate -> evaluate -> revise until quality threshold | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/03-multi-agent-safety-gates/reflection-loop/index.html) |
+| [Swarm](patterns/03-multi-agent-safety-gates/swarm/) | Many agents, no coordinator, handoff-based | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/03-multi-agent-safety-gates/swarm/index.html) |
+| [Parallel Monitor](patterns/03-multi-agent-safety-gates/parallel-monitor/) | Non-blocking safety observer alongside pipeline | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/03-multi-agent-safety-gates/parallel-monitor/index.html) |
 
 ---
 
@@ -113,8 +129,8 @@ Chain specialized LLM agents with safety checkpoints between stages. **6 variant
 
 | # | Pattern | Variants | Status |
 |---|---------|----------|--------|
-| 04 | Agentic AI with Tool Governance | MCP, A2A, Function Calling, Sandboxed | Planned |
-| 05 | LLMOps Pipeline | Azure, AWS, GCP, Databricks, Open Source | Planned |
+| 04 | Agentic AI with Tool Governance | MCP, A2A, Function Calling, Sandboxed, Compound | Planned |
+| 05 | LLMOps Pipeline | Azure, AWS, GCP, Databricks, Open Source, Hybrid | Planned |
 | 06 | Governance-as-Architecture | Embedded, Dashboard, Policy-as-Code, Decay Detection | Planned |
 | 07 | Contamination-Resistant Pipeline | Isolation, Validation, Canary, Rollback | Planned |
 | 08 | Compliance-Aware Data Routing | Azure, AWS, GCP, Multi-Cloud, On-Prem | Planned |
