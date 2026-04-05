@@ -1,32 +1,24 @@
 # Pattern 08: Compliance-Aware Data Routing
 
-**Data sensitivity drives model and provider selection. 10 variants covering every cloud, jurisdiction, and compliance model.**
+**Data sensitivity drives model and provider selection. 14 variants covering every cloud, jurisdiction, regulation, and routing architecture.**
 
 ## Which Variant Should You Use?
 
 | Your situation | Variant |
 |---------------|---------|
-| Azure ecosystem (Purview + BAA) | [Azure Compliance](azure-compliance/) |
-| AWS ecosystem (Macie + Bedrock) | [AWS Compliance](aws-compliance/) |
-| GCP ecosystem (DLP API + VPC-SC) | [GCP Compliance](gcp-compliance/) |
-| Multiple clouds, unified policy | [Multi-Cloud Compliance](multi-cloud-compliance/) |
-| Air-gapped / government | [On-Prem Compliance](on-prem-compliance/) |
-| Building the classification engine | [Sensitivity Classification](sensitivity-classification/) |
-| EU/US/Asia data residency | [Data Residency Routing](data-residency-routing/) |
-| GDPR consent-based decisions | [Consent-Based Routing](consent-based-routing/) |
+| Azure (Purview + BAA) | [Azure Compliance](azure-compliance/) |
+| AWS (Macie + Bedrock) | [AWS Compliance](aws-compliance/) |
+| GCP (DLP API + VPC-SC) | [GCP Compliance](gcp-compliance/) |
+| Multiple clouds | [Multi-Cloud](multi-cloud-compliance/) |
+| Air-gapped / government | [On-Prem](on-prem-compliance/) |
+| Building classification engine | [Sensitivity Classification](sensitivity-classification/) |
+| EU/US/Asia data residency | [Data Residency](data-residency-routing/) |
+| GDPR consent-driven | [Consent-Based](consent-based-routing/) |
 | Sensitivity changes mid-pipeline | [Dynamic Reclassification](dynamic-reclassification/) |
-| International data transfers | [Cross-Border Routing](cross-border-routing/) |
-
-## Regulatory Mapping
-
-| Regulation | Region | Key Routing Impact |
-|-----------|--------|-------------------|
-| HIPAA | US | PHI routes to BAA providers only |
-| GDPR | EU | Consent determines processing, data stays in EU |
-| PCI-DSS | Global | Card data to PCI-compliant endpoints |
-| PIPL | China | Data stays in China unless explicit consent |
-| DPDP | India | Data localization for certain categories |
-| LGPD | Brazil | Similar to GDPR, Brazilian jurisdiction |
-| FedRAMP | US Gov | FedRAMP-authorized providers only |
+| International transfers | [Cross-Border](cross-border-routing/) |
+| Multiple regulations overlap | [Multi-Regulation](multi-regulation/) |
+| De-identify to save cost | [Anonymization Routing](anonymization-routing/) |
+| Partner contractual restrictions | [Data Lineage](data-lineage-routing/) |
+| Regulations changing over time | [Temporal Compliance](temporal-compliance/) |
 
 *Governance: [GAIF Observatory](https://github.com/aman210122/gaif-governance-observatory) | Designed by [Aman Sharma](https://linkedin.com/in/amansharmaarchitect)*
