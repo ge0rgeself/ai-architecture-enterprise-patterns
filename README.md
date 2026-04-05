@@ -3,7 +3,8 @@
 **Production-tested architecture patterns for deploying AI/ML systems in regulated enterprises. Each pattern includes an interactive visualization you can play with in your browser.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Gateway Variants](https://img.shields.io/badge/AI_Gateway_variants-12-blue.svg)](#pattern-01-unified-ai-gateway)
+[![Gateway Variants](https://img.shields.io/badge/AI_Gateway-12_variants-blue.svg)](#pattern-01-unified-ai-gateway)
+[![RAG Variants](https://img.shields.io/badge/RAG-5_variants-green.svg)](#pattern-02-rag-for-regulated-data)
 [![Interactive](https://img.shields.io/badge/visualizations-interactive-purple.svg)](#how-it-works)
 
 ---
@@ -66,11 +67,26 @@ Route all LLM and ML traffic through a single governance-aware control plane for
 | [Federated](patterns/01-unified-ai-gateway/federated/) | Multi-BU gateways + central governance plane | ~$2,000+ | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/01-unified-ai-gateway/federated/index.html) |
 | [Edge](patterns/01-unified-ai-gateway/edge/) | On-device SLM + local proxy + offline-capable | ~$100-300/device | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/01-unified-ai-gateway/edge/index.html) |
 
+---
+
+## Pattern 02: RAG for Regulated Data
+
+Retrieval-augmented generation with compliance boundaries at every pipeline stage. **5 variants** covering different retrieval architectures from standard vector search to self-correcting agentic retrieval.
+
+| Variant | Architecture | Key Capability | Demo |
+|---------|-------------|---------------|------|
+| [Standard RAG](patterns/02-rag-regulated-data/standard-rag/) | Vector search + chunking + generation | Baseline RAG with guardrails | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/02-rag-regulated-data/standard-rag/index.html) |
+| [GraphRAG](patterns/02-rag-regulated-data/graph-rag/) | Knowledge graph traversal + entity resolution | Multi-hop reasoning over relationships | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/02-rag-regulated-data/graph-rag/index.html) |
+| [Agentic RAG](patterns/02-rag-regulated-data/agentic-rag/) | Self-correcting retrieval (CRAG / Self-RAG) | Re-retrieves on low confidence | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/02-rag-regulated-data/agentic-rag/index.html) |
+| [Multi-Source RAG](patterns/02-rag-regulated-data/multi-source-rag/) | Federated retrieval across platforms | Unified search across Databricks + Snowflake + more | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/02-rag-regulated-data/multi-source-rag/index.html) |
+| [Sensitive Data RAG](patterns/02-rag-regulated-data/sensitive-data-rag/) | PHI/PII-aware with classification at every stage | Zero-trust retrieval with audit trail | [Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/02-rag-regulated-data/sensitive-data-rag/index.html) |
+
+---
+
 ### Future Patterns
 
 | # | Pattern | Status |
 |---|---------|--------|
-| 02 | RAG for Regulated Data | Planned |
 | 03 | Multi-Agent Pipeline with Safety Gates | Planned |
 | 04 | Governance-as-Architecture | Planned |
 | 05 | Contamination-Resistant Pipeline | Planned |
@@ -80,13 +96,11 @@ Route all LLM and ML traffic through a single governance-aware control plane for
 
 ## Architecture Coverage
 
-Every pattern maps to a complete enterprise AI/ML reference architecture with 10 sections across two pipelines:
+Every pattern maps to a complete enterprise AI/ML reference architecture:
 
-**Build Pipeline:** Data Sources, Data Prep, Develop & Evaluate, Catalog & Registry, Governed Context Delivery (CSP)
+**Pattern 01 (Gateway):** 10 sections across Build Pipeline and Runtime Pipeline with 4 cross-cutting governance layers.
 
-**Runtime Pipeline:** Search & Retrieval, AI Gateway, Prompt Processing, Serving Infrastructure, Consumption
-
-**Cross-cutting:** Governance Security & Trust, Platform Tenancy, Observability & FinOps, Deployment & Infrastructure
+**Pattern 02 (RAG):** 11 sections across Ingestion Pipeline and Query Pipeline with data classification and retrieval quality observability.
 
 ---
 
