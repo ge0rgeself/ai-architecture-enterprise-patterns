@@ -1,6 +1,6 @@
 # AI Architecture Enterprise Patterns
 
-**186 interactive SVG architecture diagrams for enterprise AI. Click any component for full details. Run scenarios to watch data flow through the architecture.**
+**210+ interactive SVG architecture diagrams for enterprise AI. Click any component for full details. Run scenarios to watch data flow through the architecture.**
 
 Every diagram includes: spatial box-and-arrow layout, click-to-detail panels (configuration, platform mapping, anti-patterns, GAIF-4 relevance), 5 animated scenarios, 4 cross-cutting governance bars, and per-query cost tracking.
 
@@ -14,9 +14,9 @@ Governance: [GAIF Governance Observatory](https://github.com/aman210122/gaif-gov
 
 | # | Pattern | Variants | What It Answers |
 |---|---------|----------|-----------------|
-| 01 | [Unified AI Gateway](patterns/01-unified-ai-gateway/) | 12 | How do I route all LLM traffic through a single control point? |
+| 01 | [Unified AI Gateway](patterns/01-unified-ai-gateway/) | 14 | How do I route all LLM traffic through a single control point? |
 | 02 | [RAG for Regulated Data](patterns/02-rag-regulated-data/) | 12 | How do I build retrieval-augmented generation with compliance? |
-| 03 | [Multi-Agent Safety Gates](patterns/03-multi-agent-safety-gates/) | 11 | How do I chain agents with safety checkpoints between each? |
+| 03 | [Multi-Agent Safety Gates](patterns/03-multi-agent-safety-gates/) | 12 | How do I chain agents with safety checkpoints between each? |
 | 04 | [Agentic Tool Governance](patterns/04-agentic-tool-governance/) | 9 | How do I govern what agents can DO, not just what they say? |
 
 ### Operations Layer
@@ -40,31 +40,31 @@ Governance: [GAIF Governance Observatory](https://github.com/aman210122/gaif-gov
 | # | Pattern | Variants | What It Answers |
 |---|---------|----------|-----------------|
 | 11 | [AI Security Architecture](patterns/11-ai-security-architecture/) | 12 | How do I defend against AI-specific threats? |
-| 12 | [Enterprise AI Platform](patterns/12-enterprise-ai-platform/) | 12 | What infrastructure do all AI patterns run on? |
+| 12 | [Enterprise AI Platform](patterns/12-enterprise-ai-platform/) | 15 | What infrastructure do all AI patterns run on? |
 
-### Product and Operations Layer
+### Intelligence Layer
 
 | # | Pattern | Variants | What It Answers |
 |---|---------|----------|-----------------|
-| 13 | [Observability for AI](patterns/13-observability-for-ai/) | 12 | How do I know if my AI systems are working well? |
+| 13 | [Observability for AI](patterns/13-observability-for-ai/) | 14 | How do I know if my AI systems are working well? |
 | 14 | [AI Product Architecture](patterns/14-ai-product-architecture/) | 12 | What does a complete AI product look like? |
 | 15 | [Migration and Interoperability](patterns/15-migration-interoperability/) | 12 | How do I migrate AI systems across clouds and providers? |
+| 16 | [Agent Memory Architecture](patterns/16-agent-memory-architecture/) | 12 | How do agents remember across sessions with governance? |
+| 17 | [Data Sovereignty and Local-First AI](patterns/17-data-sovereignty-local-first/) | 12 | Where should AI computation happen? |
 
 ---
 
 ## How Patterns Compose Together
 
-No pattern works alone. Here is how they compose for real products:
-
 ```
                     [14. AI Products]
                     Conversational AI, Search, Copilot, CDSS
                            |
-              uses patterns 02-13 as building blocks
+              uses patterns 02-13 + 16 as building blocks
                            |
-    +----------+-----------+----------+-----------+
-    |          |           |          |           |
-[02. RAG] [03. Agents] [04. Tools] [05. LLMOps] [09. Eval]
+    +----------+-----------+----------+-----------+----------+
+    |          |           |          |           |          |
+[02. RAG] [03. Agents] [04. Tools] [05. LLMOps] [16. Memory]
     |          |           |          |           |
     +----------+-----------+----------+-----------+
                            |
@@ -76,31 +76,13 @@ No pattern works alone. Here is how they compose for real products:
     |          |           |          |           |
     +----------+-----------+----------+-----------+
                            |
-              observed and operated on
+              observed, operated, and hosted on
                            |
-    +----------+-----------+----------+
-    |          |           |          |
-[12. Platform] [13. Observ] [15. Migration]
-[01. Gateway]
+    +----------+-----------+----------+-----------+
+    |          |           |          |           |
+[01. Gateway] [12. Platform] [13. Observ] [15. Migrate] [17. Sovereignty]
+                                          [09. Eval]
 ```
-
-### Example: Clinical Decision Support System
-
-| Layer | Pattern Used | Purpose |
-|-------|-------------|---------|
-| Product | P14 (Clinical Decision Support) | Complete CDSS product architecture |
-| Knowledge | P02 (RAG) | Retrieve clinical evidence from guidelines |
-| Agents | P03 (Multi-Agent) | Chain extraction, analysis, synthesis agents |
-| Safety | P07 (Contamination-Resistant) | Prevent drug interaction hallucinations |
-| Compliance | P08 (Compliance-Aware) | Route PHI through BAA endpoints only |
-| Quality | P09 (Evaluation) | Clinical accuracy testing with domain experts |
-| Economics | P10 (FinOps) | Track cost per clinical query |
-| Security | P11 (AI Security) | Protect against prompt injection in clinical context |
-| Platform | P12 (Enterprise Platform) | Databricks + Azure AI Foundry infrastructure |
-| Observability | P13 (Observability) | Monitor clinical quality and safety metrics |
-| Migration | P15 (Migration) | Migrate from legacy to new platform |
-| Governance | P06 (Governance) | GAIF-4 metrics, HIPAA compliance, audit trail |
-| Gateway | P01 (Gateway) | Single control point for all model calls |
 
 ---
 
@@ -136,14 +118,12 @@ Every pattern integrates [GAIF-4](https://github.com/aman210122/gaif-governance-
 
 ## Research Basis
 
-Several patterns are directly based on published research:
-
 | Pattern | Research | Finding |
 |---------|----------|---------|
-| P07 (Contamination) | [EMG Paper](https://doi.org/10.5281/zenodo.19411743) | 74 critical drug interactions across 4,800 trials; collective delusion; gap inversion |
-| P07 (Contamination) | ContamPerc Paper | Contamination percolation in multi-agent graphs; T1PR metric |
-| P08 (Compliance) | [PHI-GUARD Paper](https://doi.org/10.36227/techrxiv.177220388.80392106/v1) | CARES algorithm; zero PHI violations across 30K MIMIC-IV queries |
-| All Patterns | [GAIF v1.0](https://doi.org/10.5281/zenodo.19341015) | Governance framework with T1PR, CFR, EMR, GDR metrics |
+| P07 | [EMG Paper](https://doi.org/10.5281/zenodo.19411743) | 74 critical drug interactions across 4,800 trials; collective delusion; gap inversion |
+| P07 | ContamPerc Paper | Contamination percolation in multi-agent graphs; T1PR metric |
+| P08 | [PHI-GUARD Paper](https://doi.org/10.36227/techrxiv.177220388.80392106/v1) | CARES algorithm; zero PHI violations across 30K MIMIC-IV queries |
+| All | [GAIF v1.0](https://doi.org/10.5281/zenodo.19341015) | Governance framework with T1PR, CFR, EMR, GDR metrics |
 
 ---
 
