@@ -1,10 +1,5 @@
-# Variant: Continuous Compliance
-
-**Real-time compliance state machine. Not point-in-time but continuous monitoring with auto-response.**
-
-## Live Demo
-**[Launch](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/06-governance-as-architecture/continuous-compliance/index.html)**
-
-**Use:** Compliance cannot be a quarterly check. Must be continuously monitored and auto-remediated.
-
-*[AI Architecture Enterprise Patterns](https://github.com/aman210122/ai-architecture-enterprise-patterns) | Designed by [Aman Sharma](https://linkedin.com/in/amansharmaarchitect)*
+# Continuous Compliance
+**Automated compliance checking, not just at deploy time.**
+## [Launch Demo](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/06-governance-as-architecture/continuous-compliance/index.html)
+Unique SVG: governance boundary wrapping AI system. Left (Define+Assess), Center (AI System), Right (Enforce+Measure), Bottom (Report). BSC 7-phase lifecycle. 5 scenarios: governed request, policy blocks, high-risk tier, GDR spike, compliance audit.
+*[AI Architecture Enterprise Patterns](https://github.com/aman210122/ai-architecture-enterprise-patterns) | [Aman Sharma](https://linkedin.com/in/amansharmaarchitect)*

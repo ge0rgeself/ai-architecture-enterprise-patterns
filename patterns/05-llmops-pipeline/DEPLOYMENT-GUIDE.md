@@ -1,21 +1,16 @@
 # Deployment Guide: LLMOps Pipeline
-## Prerequisites: Pattern 01 (Gateway), CI/CD pipeline, model serving infra
+## Prerequisites: Git repo for prompts, eval framework, model registry, deployment target
 ## Steps
-1. Set up prompt engineering workspace with version control (git-tracked prompts)
-2. Configure model selection benchmarks (quality, cost, latency per task)
-3. Build evaluation harness: golden datasets, regression tests, safety tests, bias tests
-4. Set up red team testing: adversarial inputs, jailbreak attempts, prompt injection
-5. Configure human evaluation workflow: SME review, preference ranking
-6. Deploy prompt registry: versioned prompts with approval gates and ownership
-7. Deploy model registry: versioned models with lineage and deployment targets
-8. Configure artifact packaging: bundle prompt + model + config + guardrails
-9. Set up canary deployment: 5% traffic routing, metric comparison, auto-promote
-10. Configure A/B testing: statistical significance thresholds, minimum sample size
-11. Implement rollback: quality threshold triggers, auto-revert, notification
-12. Deploy quality monitoring: groundedness, relevance, safety on production traffic
-13. Configure drift detection: prompt drift, data drift, topic drift baselines
-14. Set up cost monitoring: token tracking, budget alerts, per-team breakdown
-15. Implement feedback loop: user ratings, implicit signals, integration into eval
-16. Create incident playbooks: hallucination spike, PHI leak, cost runaway, model outage
-17. GAIF-4: T1PR on outputs, CFR on policy, EMR on drift, GDR weekly trending
+1. Set up prompt versioning: git repo with system prompts, few-shot examples, templates
+2. Build eval suite: golden dataset (100+ test cases), quality rubric, adversarial cases
+3. Configure CI pipeline: eval runs on every PR, quality gate blocks merge if score < 0.85
+4. Deploy model registry: MLflow / AI Foundry / Bedrock model catalog
+5. Register prompt-model combinations: version, eval results, approval chain
+6. Configure canary deployment: 10% traffic split, quality comparison, auto-promote/reject
+7. Set up monitoring: quality sampling (5%), latency percentiles, cost per query
+8. Configure drift detection: 7-day rolling average, alert on downward trend
+9. Build rollback capability: instant switch to previous version, auto-trigger on quality drop
+10. Set up A/B testing framework: traffic split, significance testing, duration planning
+11. Configure cost optimization: route by complexity, cache repeated queries
+12. GAIF-4: T1PR on bad prompts in production, GDR on process decay
 *[Aman Sharma](https://linkedin.com/in/amansharmaarchitect)*

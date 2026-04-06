@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pattern 06: Shadow AI Detection</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+:root{--bg:#0d1117;--bg2:#161b22;--bg3:#1c2333;--bg4:#252d3f;--text:#c9d1d9;--text2:#b8c0cc;--text3:#8b949e;--border:rgba(139,149,168,0.12);
+--gov:#d97706;--govL:#f59e0b;--pol:#3b82f6;--polL:#60a5fa;--enf:#8b5cf6;--enfL:#a78bfa;--msr:#06b6d4;--msrL:#22d3ee;--rpt:#10b981;
+--ok:#34d399;--err:#f87171;--warn:#fbbf24;--ops:#38bdf8;--eco:#fb923c;
+--f:'Manrope',sans-serif;--m:'JetBrains Mono',monospace}
+*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--text);font-family:var(--f)}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(217,119,6,0.03),transparent 60%);pointer-events:none}
+.pg{max-width:1440px;margin:0 auto;padding:1.2rem}
+.hdr{margin-bottom:0.8rem;display:flex;align-items:center;gap:12px;padding-bottom:0.6rem;border-bottom:1px solid var(--border)}
+.hdr-badge{background:linear-gradient(135deg,var(--gov),var(--pol));padding:5px 10px;border-radius:5px;font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#fff}
+.hdr h1{font-size:20px;font-weight:800;letter-spacing:-0.3px}.hdr p{font-size:11px;color:var(--text2)}
+.sc-bar{display:flex;gap:5px;margin-bottom:0.6rem;flex-wrap:wrap;align-items:center}
+.sc-btn{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:5px 11px;cursor:pointer;font-family:var(--f);font-size:10px;color:var(--text2);transition:all 0.2s;display:flex;align-items:center;gap:4px}
+.sc-btn:hover{border-color:var(--gov);color:var(--text)}.sc-btn.active{border-color:var(--gov);color:var(--gov);background:rgba(217,119,6,0.08);font-weight:600}.sc-btn:disabled{opacity:0.3;cursor:not-allowed}
+.sc-dot{width:6px;height:6px;border-radius:50%}.sc-reset{margin-left:auto;background:none;border:1px solid var(--border);border-radius:6px;padding:4px 8px;cursor:pointer;font-family:var(--f);font-size:9px;color:var(--text3)}
+.dw{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:8px;margin-bottom:0.6rem;overflow-x:auto}
+.dw svg{width:100%;min-width:1050px;height:auto;display:block}
+svg text{font-family:'Manrope',sans-serif}
+.box{rx:8;ry:8;stroke-width:1.5;cursor:pointer;transition:all 0.3s}.box:hover{filter:brightness(1.15)}.box.hl{stroke-width:2.5;filter:drop-shadow(0 0 6px currentColor)}.box.dim{opacity:0.08}
+.gov-wrap{rx:12;ry:12;stroke-dasharray:8,4;fill:none;stroke-width:2;opacity:0.15;transition:all 0.3s}
+.gov-wrap.hl{opacity:0.4;stroke-width:3}
+.arr{fill:none;stroke:#8b949e;stroke-width:1.2;opacity:0.25}.arr.li{opacity:1;stroke-width:2}
+.bx-t{font-size:9.5px;font-weight:700;text-anchor:middle}.bx-s{font-size:7px;fill:#b8c0cc;text-anchor:middle}
+.lbl{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.gbar{rx:5;ry:5}.gbar-t{font-size:8px;font-weight:600;letter-spacing:0.5px}
+.phase-tag{font-size:7px;font-weight:700;letter-spacing:0.8px;text-anchor:middle;text-transform:uppercase}
+.hint{font-size:5.5px;fill:#60a5fa;opacity:0.5;text-anchor:middle}
+.dp{background:var(--bg2);border:1px solid var(--border);border-radius:10px;margin-bottom:0.6rem;overflow:hidden;transition:all 0.3s}.dp.closed{max-height:0;border:none;margin:0}.dp.open{max-height:600px}
+.dp-h{padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}.dp-title{font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px}.dp-tag{font-size:8px;padding:2px 8px;border-radius:4px;font-weight:600;font-family:var(--m)}.dp-close{background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px}
+.dp-body{padding:12px 16px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}@media(max-width:900px){.dp-body{grid-template-columns:1fr}}
+.dp-sec-t{font-size:9px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--text3);margin-bottom:6px;padding-bottom:3px;border-bottom:1px solid var(--border)}
+.dp-it{font-size:10px;color:var(--text2);margin-bottom:3px;line-height:1.5;display:flex;align-items:baseline;gap:5px}.dp-it::before{content:'';width:4px;height:4px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.dp-it.ok::before{background:var(--ok)}.dp-it.warn::before{background:var(--warn)}.dp-it.info::before{background:var(--ops)}.dp-it.plat::before{background:var(--gov)}
+.rsp{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 14px;display:flex;align-items:center;gap:10px;transition:all 0.3s;margin-bottom:0.6rem;flex-wrap:wrap}
+.rsp.ok{border-color:var(--ok);background:rgba(52,211,153,0.06)}.rsp.er{border-color:var(--err);background:rgba(248,113,113,0.06)}.rsp.wn{border-color:var(--warn);background:rgba(251,191,36,0.06)}
+.rsp-c{font-family:var(--m);font-size:12px;font-weight:700}.rsp-m{font-size:10px;color:var(--text2);flex:1}.rsp-${font-family:var(--m);font-size:10px;color:var(--eco)}
+.brow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:0.6rem}@media(max-width:900px){.brow{grid-template-columns:1fr}}
+.mets{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}@media(max-width:768px){.mets{grid-template-columns:repeat(2,1fr)}}
+.met{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px}
+.met-l{font-size:7px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--text3);display:flex;align-items:center;gap:3px}.met-b{font-size:6px;padding:1px 4px;border-radius:2px;font-weight:600}
+.met-v{font-size:18px;font-weight:700;font-family:var(--m)}.met-bar{height:2px;border-radius:1px;background:var(--bg4);margin-top:3px;overflow:hidden}.met-f{height:100%;border-radius:1px;transition:width 0.5s}.met-n{font-size:7px;color:var(--text3);margin-top:2px}
+.log{background:var(--bg3);border:1px solid var(--border);border-radius:6px;overflow:hidden}
+.log-h{padding:5px 10px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;font-size:8px;font-weight:700;color:var(--text3)}
+.log-clr{background:none;border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:7px;color:var(--text3);cursor:pointer;font-family:var(--f)}
+.log-b{max-height:140px;overflow-y:auto;padding:2px 0;font-family:var(--m);font-size:8px}.log-b::-webkit-scrollbar{width:2px}.log-b::-webkit-scrollbar-thumb{background:var(--bg4)}
+.lr{padding:1px 10px;display:flex;gap:6px;animation:fi 0.15s ease}@keyframes fi{from{opacity:0}to{opacity:1}}
+.lr-t{color:var(--text3);min-width:60px}.lr-p{min-width:50px;font-weight:600}.lr-m{color:var(--text2);flex:1}
+.lr-p.po{color:var(--pol)}.lr-p.gv{color:var(--gov)}.lr-p.en{color:var(--enf)}.lr-p.ms{color:var(--msr)}.lr-p.rp{color:var(--rpt)}.lr-p.ok{color:var(--ok)}.lr-p.er{color:var(--err)}.lr-p.wn{color:var(--warn)}.lr-p.ec{color:var(--eco)}
+.footer{text-align:center;padding:0.6rem 0;font-size:8px;color:var(--text3)}.footer a{color:var(--gov);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="pg">
+<div class="hdr"><div class="hdr-badge">Pattern 06</div><div><h1>Shadow AI Detection</h1><p>Detect unauthorized AI usage. Network monitoring for API calls to OpenAI/Anthropic/etc outside governed paths. Click any phase for details.</p></div></div>
+
+<div class="sc-bar">
+<button class="sc-btn" onclick="run('governed')" id="btn-governed"><div class="sc-dot" style="background:var(--ok)"></div>Governed request</button>
+<button class="sc-btn" onclick="run('blocked')" id="btn-blocked"><div class="sc-dot" style="background:var(--err)"></div>Policy blocks</button>
+<button class="sc-btn" onclick="run('highrisk')" id="btn-highrisk"><div class="sc-dot" style="background:var(--warn)"></div>High-risk tier</button>
+<button class="sc-btn" onclick="run('decay')" id="btn-decay"><div class="sc-dot" style="background:var(--gov)"></div>GDR spike</button>
+<button class="sc-btn" onclick="run('audit')" id="btn-audit"><div class="sc-dot" style="background:var(--msr)"></div>Compliance audit</button>
+<button class="sc-reset" onclick="resetAll()">&#8634; Reset</button></div>
+
+<div class="dw">
+<svg viewBox="0 0 1050 500" xmlns="http://www.w3.org/2000/svg">
+<text x="525" y="16" text-anchor="middle" fill="#8b949e" style="font-size:9px;font-style:italic">Click any governance phase for full details. Governance wraps around the AI system, not beside it.</text>
+
+<!-- OUTER GOVERNANCE WRAPPER (dashed border around the entire AI system) -->
+<rect class="gov-wrap" id="g-wrap" x="15" y="28" width="1020" height="430" stroke="#d97706"/>
+<text x="525" y="46" text-anchor="middle" fill="#d97706" style="font-size:10px;font-weight:800;letter-spacing:1px">GOVERNANCE BOUNDARY</text>
+
+<!-- LEFT COLUMN: PRE-REQUEST GOVERNANCE -->
+<text class="lbl" x="30" y="72" fill="#3b82f6">PRE-REQUEST</text>
+
+<rect class="box" id="b-define" x="25" y="82" width="220" height="80" fill="#1c2333" stroke="#3b82f6" onclick="detail('define')"/>
+<text class="bx-t" x="135" y="104" fill="#3b82f6" style="font-size:10px">1. Define Policies</text>
+<text class="bx-s" x="135" y="118">Content policy | PHI rules | use case approval</text>
+<text class="bx-s" x="135" y="130">Risk classification: network scan</text>
+<text class="bx-s" x="135" y="142">25-question risk assessment across 7 domains</text>
+<text class="hint" x="135" y="156">&#9432; click for details</text>
+
+<path class="arr" id="a-da" d="M135 162 L135 178"/>
+
+<rect class="box" id="b-assess" x="25" y="178" width="220" height="80" fill="#1c2333" stroke="#3b82f6" onclick="detail('assess')"/>
+<text class="bx-t" x="135" y="200" fill="#3b82f6" style="font-size:10px">2. Assess Risk</text>
+<text class="bx-s" x="135" y="214">Tier 1 (low) to Tier 4 (critical)</text>
+<text class="bx-s" x="135" y="226">Auto-approve T1/T2, committee for T3/T4</text>
+<text class="bx-s" x="135" y="238">Impact: patient safety, financial, reputational</text>
+<text class="hint" x="135" y="252">&#9432; click for details</text>
+
+<!-- Arrow from Assess to AI System -->
+<path class="arr" id="a-as" d="M245 218 L380 218"/>
+
+<!-- CENTER: AI SYSTEM UNDER GOVERNANCE -->
+<text x="525" y="82" text-anchor="middle" fill="#8b949e" style="font-size:8px;font-weight:700;letter-spacing:1px">AI SYSTEM UNDER GOVERNANCE</text>
+
+<rect class="box" id="b-input" x="380" y="92" width="290" height="50" fill="#1c2333" stroke="#8b949e" onclick="detail('input')"/>
+<text class="bx-t" x="525" y="114" fill="#c9d1d9">Input Gate</text>
+<text class="bx-s" x="525" y="128">Content filter + PHI scan + injection check</text>
+
+<path class="arr" id="a-ig" d="M525 142 L525 158"/>
+
+<rect class="box" id="b-model" x="380" y="158" width="290" height="60" fill="#1c2333" stroke="#d97706" stroke-width="2" onclick="detail('model')"/>
+<text class="bx-t" x="525" y="178" fill="#d97706" style="font-size:11px">LLM Processing</text>
+<text class="bx-s" x="525" y="192">Model call with guardrails enforced at gateway</text>
+<text class="bx-s" x="525" y="204">Token limits | temperature | tool permissions</text>
+
+<path class="arr" id="a-mg" d="M525 218 L525 234"/>
+
+<rect class="box" id="b-output" x="380" y="234" width="290" height="50" fill="#1c2333" stroke="#8b949e" onclick="detail('output')"/>
+<text class="bx-t" x="525" y="254" fill="#c9d1d9">Output Gate</text>
+<text class="bx-s" x="525" y="268">Groundedness + PHI leak + safety + citations</text>
+
+<!-- RIGHT COLUMN: RUNTIME/POST GOVERNANCE -->
+<text class="lbl" x="710" y="72" fill="#8b5cf6">RUNTIME</text>
+
+<rect class="box" id="b-enforce" x="700" y="82" width="220" height="80" fill="#1c2333" stroke="#8b5cf6" onclick="detail('enforce')"/>
+<text class="bx-t" x="810" y="104" fill="#8b5cf6" style="font-size:10px">3. Enforce at Runtime</text>
+<text class="bx-s" x="810" y="118">Gateway guardrails (P01) enforce policies</text>
+<text class="bx-s" x="810" y="130">Content safety, PHI blocking, rate limits</text>
+<text class="bx-s" x="810" y="142">Real-time, not post-hoc</text>
+<text class="hint" x="810" y="156">&#9432; click for details</text>
+
+<!-- Arrow from AI System to Enforce -->
+<path class="arr" id="a-me" d="M670 188 L700 140"/>
+
+<rect class="box" id="b-measure" x="700" y="178" width="220" height="80" fill="#1c2333" stroke="#06b6d4" onclick="detail('measure')"/>
+<text class="bx-t" x="810" y="200" fill="#06b6d4" style="font-size:10px">4. Measure Outcomes</text>
+<text class="bx-s" x="810" y="214">GAIF-4: T1PR, CFR, EMR, GDR</text>
+<text class="bx-s" x="810" y="226">Per system, per model, per team</text>
+<text class="bx-s" x="810" y="238">Weekly trend, threshold alerts</text>
+<text class="hint" x="810" y="252">&#9432; click for details</text>
+
+<!-- Arrow from AI System to Measure -->
+<path class="arr" id="a-om" d="M670 258 L700 230"/>
+
+<!-- BOTTOM: REPORT & AUDIT (spanning full width) -->
+<rect class="box" id="b-report" x="25" y="300" width="920" height="70" fill="#1c2333" stroke="#10b981" onclick="detail('report')"/>
+<text class="bx-t" x="485" y="322" fill="#10b981" style="font-size:11px">5. Report and Audit</text>
+<text class="bx-s" x="485" y="338">GAIF-4 dashboard | CISO governance report | regulatory evidence | committee review | 7-year retention</text>
+<text class="bx-s" x="485" y="352">Immutable audit trail: who approved, what was deployed, which policies applied, what outcomes occurred</text>
+<text class="hint" x="485" y="364">&#9432; click for details</text>
+
+<!-- Arrows from Measure down to Report -->
+<path class="arr" id="a-mr" d="M810 258 L810 300"/>
+<!-- Arrow from Define down to Report -->
+<path class="arr" id="a-dr" d="M135 258 L135 300"/>
+
+<!-- Feedback from Report back to Define -->
+<path class="arr" id="a-fb" d="M100 370 Q60 400 60 340 Q60 100 100 82" stroke-dasharray="6,3" opacity="0.1"/>
+<text x="48" y="230" text-anchor="middle" fill="#10b981" style="font-size:6px;writing-mode:tb" opacity="0.2" id="fb-lbl">Feedback: audit findings improve policies</text>
+
+<!-- 7-Phase Lifecycle indicator -->
+<rect class="gbar" x="25" y="390" width="920" height="24" fill="rgba(217,119,6,0.06)" stroke="rgba(217,119,6,0.15)" rx="5"/>
+<text x="485" y="406" text-anchor="middle" fill="#d97706" style="font-size:8px;font-weight:700">BSC 7-PHASE LIFECYCLE</text>
+<text x="110" y="406" text-anchor="middle" fill="#8b949e" style="font-size:6.5px">1.Intake</text>
+<text x="220" y="406" text-anchor="middle" fill="#8b949e" style="font-size:6.5px">2.Assess</text>
+<text x="330" y="406" text-anchor="middle" fill="#8b949e" style="font-size:6.5px">3.Design</text>
+<text x="440" y="406" text-anchor="middle" fill="#8b949e" style="font-size:6.5px">4.Build</text>
+<text x="550" y="406" text-anchor="middle" fill="#8b949e" style="font-size:6.5px">5.Deploy</text>
+<text x="660" y="406" text-anchor="middle" fill="#8b949e" style="font-size:6.5px">6.Monitor</text>
+<text x="770" y="406" text-anchor="middle" fill="#8b949e" style="font-size:6.5px">7.Retire</text>
+
+<rect class="gbar" x="10" y="430" width="1030" height="20" fill="rgba(251,146,60,0.06)" stroke="rgba(251,146,60,0.12)"/>
+<text class="gbar-t" x="22" y="444" fill="#fb923c">ECONOMICS</text><text class="gbar-t" x="115" y="444" fill="#8b949e">Governance Compute | Risk Assessment Time | Compliance Overhead | Audit Storage | Committee Hours</text>
+</svg>
+</div>
+
+<div class="dp closed" id="dp"><div class="dp-h"><div class="dp-title" id="dp-title">Component</div><button class="dp-close" onclick="closeDetail()">&#10005;</button></div><div class="dp-body" id="dp-body"></div></div>
+<div class="rsp" id="rsp"><span class="rsp-c" id="rsp-c">---</span><span class="rsp-m" id="rsp-m">Click any governance phase, or run a scenario</span><span class="rsp-$" id="rsp-$"></span></div>
+
+<div class="brow">
+<div class="mets">
+<div class="met"><div class="met-l">T1PR <span class="met-b" id="mb-t" style="background:rgba(52,211,153,0.12);color:#34d399">SAFE</span></div><div class="met-v" id="m-t" style="color:#34d399">0.02</div><div class="met-bar"><div class="met-f" id="mf-t" style="width:2%;background:#34d399"></div></div><div class="met-n">Bad outputs past governance</div></div>
+<div class="met"><div class="met-l">CFR <span class="met-b" id="mb-c" style="background:rgba(52,211,153,0.12);color:#34d399">SAFE</span></div><div class="met-v" id="m-c" style="color:#34d399">0.00</div><div class="met-bar"><div class="met-f" id="mf-c" style="width:0%;background:#34d399"></div></div><div class="met-n">Policy violations</div></div>
+<div class="met"><div class="met-l">EMR <span class="met-b" id="mb-e" style="background:rgba(52,211,153,0.12);color:#34d399">SAFE</span></div><div class="met-v" id="m-e" style="color:#34d399">0.01</div><div class="met-bar"><div class="met-f" id="mf-e" style="width:1%;background:#34d399"></div></div><div class="met-n">Emergent ungoverned</div></div>
+<div class="met"><div class="met-l">GDR <span class="met-b" id="mb-g" style="background:rgba(52,211,153,0.12);color:#34d399">OK</span></div><div class="met-v" id="m-g" style="color:#34d399">0.02</div><div class="met-bar"><div class="met-f" id="mf-g" style="width:2%;background:#34d399"></div></div><div class="met-n">Governance decay</div></div>
+</div>
+<div class="log"><div class="log-h"><span>Governance Decision Log</span><button class="log-clr" onclick="clearLog()">Clear</button></div><div class="log-b" id="logB"></div></div>
+</div>
+<div class="footer"><a href="https://github.com/aman210122/ai-architecture-enterprise-patterns">GitHub</a> | <a href="https://linkedin.com/in/amansharmaarchitect">Aman Sharma</a> | <a href="https://github.com/aman210122/gaif-governance-observatory">GAIF Observatory</a></div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);const W=ms=>new Promise(r=>setTimeout(r,ms));let busy=false;
+const DETAILS={
+define:{title:'1. Define Policies',tag:'PRE-REQUEST',tagColor:'#3b82f6',sections:[{title:'What It Does',items:[{t:'Defines content policies: what the AI can and cannot say',c:'info'},{t:'PHI/PII rules: what data flows where, BAA requirements',c:'info'},{t:'Use case approval: 25-question risk assessment across 7 domains',c:'info'},{t:'Risk classification: network scan (T1 low to T4 critical)',c:'info'}]},{title:'BSC Risk Assessment',items:[{t:'7 domains: clinical, financial, operational, reputational, regulatory, security, privacy',c:'ok'},{t:'25 questions scored 1-5, weighted by domain',c:'ok'},{t:'Tier 1 (score < 25): auto-approve, standard guardrails',c:'ok'},{t:'Tier 2 (25-50): manager approval, enhanced monitoring',c:'ok'},{t:'Tier 3 (50-75): committee review, dedicated governance',c:'warn'},{t:'Tier 4 (75+): CISO + CMO approval, real-time monitoring',c:'warn'}]},{title:'Policy Sources',items:[{t:'NIST AI RMF MAP/MEASURE/MANAGE/GOVERN functions',c:'plat'},{t:'EU AI Act risk classification requirements',c:'plat'},{t:'HIPAA/HITECH for PHI in healthcare',c:'plat'},{t:'GAIF v1.0 framework (published)',c:'plat'}]}]},
+assess:{title:'2. Assess Risk',tag:'PRE-REQUEST',tagColor:'#3b82f6',sections:[{title:'What It Does',items:[{t:'Classifies each AI use case into risk tier (T1-T4)',c:'info'},{t:'Identifies potential harms: clinical, financial, privacy',c:'info'},{t:'Determines governance controls required per tier',c:'info'}]},{title:'Assessment Process',items:[{t:'Tier 1 (low): FAQ bot, summarization. Auto-approve.',c:'ok'},{t:'Tier 2 (moderate): Internal analytics, recommendations. Manager.',c:'ok'},{t:'Tier 3 (high): Clinical decision support, claims. Committee.',c:'warn'},{t:'Tier 4 (critical): Autonomous clinical actions. CISO + CMO.',c:'warn'}]},{title:'Anti-Patterns',items:[{t:'Skipping risk assessment (deploy without classification)',c:'warn'},{t:'One-size-fits-all (same governance for chatbot and clinical AI)',c:'warn'},{t:'Assessment once, never re-assessed (risk changes over time)',c:'warn'}]}]},
+input:{title:'Input Gate',tag:'AI SYSTEM',tagColor:'#8b949e',sections:[{title:'What It Does',items:[{t:'First line of runtime enforcement on incoming requests',c:'info'},{t:'Content filter: block harmful, inappropriate inputs',c:'info'},{t:'PHI scan: detect and handle protected health information',c:'info'},{t:'Injection check: prompt injection, jailbreak detection',c:'info'}]},{title:'Enforcement',items:[{t:'Content Safety: Azure Content Safety / AWS Guardrails / NeMo',c:'ok'},{t:'PHI scan: Presidio / Azure Purview / custom regex',c:'ok'},{t:'Injection: classifier + pattern matching',c:'ok'},{t:'All checks < 50ms latency (non-blocking path)',c:'ok'}]},{title:'GAIF-4',items:[{t:'T1PR: bad inputs passing input gate',c:'warn'},{t:'CFR: PHI in input not caught',c:'warn'}]}]},
+model:{title:'LLM Processing',tag:'AI SYSTEM',tagColor:'#d97706',sections:[{title:'What It Does',items:[{t:'The actual model call, wrapped in governance controls',c:'info'},{t:'Gateway (P01) enforces: model selection, token limits, temperature',c:'info'},{t:'Guardrails applied: content policy, PHI rules, cost caps',c:'info'}]},{title:'Governance Applied',items:[{t:'Model whitelist: only approved models from registry',c:'ok'},{t:'Token limits: per-tier (T1: 2048, T4: 8192)',c:'ok'},{t:'Temperature: locked per use case (clinical: 0.0)',c:'ok'},{t:'Tool permissions: per-tier (T1: read-only, T4: no tools)',c:'ok'}]},{title:'Platform',items:[{t:'Databricks: Mosaic AI Gateway enforces all controls',c:'plat'},{t:'Azure: AI Foundry with Content Safety',c:'plat'},{t:'AWS: Bedrock Guardrails',c:'plat'}]}]},
+output:{title:'Output Gate',tag:'AI SYSTEM',tagColor:'#8b949e',sections:[{title:'What It Does',items:[{t:'Validates model output before delivery to user',c:'info'},{t:'Groundedness: is the output supported by source data?',c:'info'},{t:'PHI leak: did the model leak patient data?',c:'info'},{t:'Safety: harmful content, bias, misinformation check',c:'info'}]},{title:'Checks',items:[{t:'Groundedness: score > 0.80 required (T4: > 0.95)',c:'ok'},{t:'PHI leak: zero tolerance, any PHI = blocked',c:'ok'},{t:'Citations: all claims must reference source',c:'ok'},{t:'Safety: toxicity, bias, self-harm content blocked',c:'ok'}]},{title:'GAIF-4',items:[{t:'T1PR: bad outputs passing this gate = governance failure',c:'warn'},{t:'EMR: emergent dangerous content caught here',c:'warn'}]}]},
+enforce:{title:'3. Enforce at Runtime',tag:'RUNTIME',tagColor:'#8b5cf6',sections:[{title:'What It Does',items:[{t:'Policies defined in step 1 are enforced HERE, in real-time',c:'info'},{t:'Not a PDF document. Not a review meeting. Code enforces policy.',c:'info'},{t:'Gateway guardrails + content safety + DLP run on every request',c:'info'}]},{title:'Enforcement Mechanisms',items:[{t:'Gateway (P01): central enforcement point for all LLM calls',c:'ok'},{t:'Content Safety API: real-time content classification',c:'ok'},{t:'DLP (Presidio): PHI/PII detection and redaction',c:'ok'},{t:'Rate limiting: per-user, per-model, per-team',c:'ok'},{t:'Cost caps: hard limits per team per day',c:'ok'}]},{title:'Key Insight',items:[{t:'Governance as Architecture means policies are code, not documents',c:'warn'},{t:'If you can bypass the gateway, governance is broken',c:'warn'},{t:'100% of LLM traffic must flow through governed path',c:'warn'}]}]},
+measure:{title:'4. Measure Outcomes',tag:'RUNTIME',tagColor:'#06b6d4',sections:[{title:'What It Does',items:[{t:'Quantifies governance effectiveness with GAIF-4 metrics',c:'info'},{t:'Tracked per system, per model, per team, per week',c:'info'},{t:'Alerts when governance effectiveness degrades',c:'info'}]},{title:'GAIF-4 Metrics',items:[{t:'T1PR: what fraction of bad outputs pass safety filters?',c:'ok'},{t:'CFR: what fraction of outputs violate compliance policies?',c:'ok'},{t:'EMR: what fraction of outputs contain emergent dangerous content?',c:'ok'},{t:'GDR: is governance effectiveness degrading over time?',c:'ok'}]},{title:'Thresholds',items:[{t:'T1PR < 0.05: safe. > 0.15: critical governance failure',c:'warn'},{t:'CFR: 0.00 target. > 0.01: compliance incident',c:'warn'},{t:'EMR < 0.05: safe. > 0.15: systemic issue',c:'warn'},{t:'GDR < 0.03: stable. > 0.05: governance decay alert',c:'warn'}]}]},
+report:{title:'5. Report and Audit',tag:'REPORT',tagColor:'#10b981',sections:[{title:'What It Does',items:[{t:'GAIF-4 dashboard for CISO, CTO, compliance team',c:'info'},{t:'Regulatory evidence: prove governance was applied',c:'info'},{t:'Committee review: quarterly governance effectiveness report',c:'info'},{t:'7-year retention: immutable audit trail',c:'info'}]},{title:'Reports Generated',items:[{t:'Weekly: GAIF-4 metrics per system (automated)',c:'ok'},{t:'Monthly: governance effectiveness trend (automated)',c:'ok'},{t:'Quarterly: committee review with recommendations',c:'ok'},{t:'On-demand: regulatory evidence package for auditors',c:'ok'}]},{title:'Audit Trail Contents',items:[{t:'Every policy version, approval, and deployment',c:'plat'},{t:'Every request: input, output, governance decisions',c:'plat'},{t:'Every incident: detection, response, resolution',c:'plat'},{t:'GAIF-4 metric history: full time series',c:'plat'}]}]}
+};
+
+function detail(id){const d=DETAILS[id];if(!d)return;$('dp-title').innerHTML=`${d.title} <span class="dp-tag" style="background:${d.tagColor}22;color:${d.tagColor}">${d.tag}</span>`;let h='';d.sections.forEach(s=>{h+=`<div><div class="dp-sec-t">${s.title}</div>`;s.items.forEach(i=>{h+=`<div class="dp-it ${i.c}">${i.t}</div>`});h+='</div>'});$('dp-body').innerHTML=h;$('dp').className='dp open'}
+function closeDetail(){$('dp').className='dp closed'}
+
+const BOXES=['b-define','b-assess','b-input','b-model','b-output','b-enforce','b-measure','b-report'];
+function log(tp,msg){const el=$('logB');const ts=new Date().toLocaleTimeString('en-US',{hour12:false})+'.'+String(new Date().getMilliseconds()).padStart(3,'0');const r=document.createElement('div');r.className='lr';r.innerHTML=`<span class="lr-t">${ts}</span><span class="lr-p ${tp}">${tp.toUpperCase()}</span><span class="lr-m">${msg}</span>`;el.insertBefore(r,el.firstChild);if(el.children.length>50)el.removeChild(el.lastChild)}
+function clearLog(){$('logB').innerHTML=''}
+function hlB(id){$(id)?.classList.add('hl')}
+function dimB(id){$(id)?.classList.add('dim')}
+function hlW(){$('g-wrap').classList.add('hl')}
+function rst(){BOXES.forEach(id=>{const e=$(id);if(e)e.classList.remove('hl','dim')});$('g-wrap').classList.remove('hl');$('rsp').className='rsp';$('rsp-c').textContent='---';$('rsp-m').textContent='';$('rsp-$').textContent='';$('fb-lbl').style.opacity='0.2';$('a-fb').style=''}
+function resp(c,code,msg,cost){$('rsp').className='rsp '+c;$('rsp-c').textContent=code;$('rsp-m').textContent=msg;$('rsp-$').textContent=cost||''}
+function sM(t,c,e,g){const mk=(id,v,thL,thH,safe)=>{$(id).textContent=v.toFixed(2);const f=id.replace('m-','mf-'),b=id.replace('m-','mb-');const ok=v<=thL,mid=v<=thH;$(f).style.width=Math.min(v*500,100)+'%';$(f).style.background=ok?'#34d399':mid?'#fbbf24':'#f87171';$(id).style.color=ok?'#34d399':mid?'#fbbf24':'#f87171';$(b).textContent=ok?safe:mid?'WARN':'CRIT';$(b).style.background=ok?'rgba(52,211,153,0.12)':mid?'rgba(251,191,36,0.12)':'rgba(248,113,113,0.12)';$(b).style.color=ok?'#34d399':mid?'#fbbf24':'#f87171'};mk('m-t',t,0.05,0.15,'SAFE');mk('m-c',c,0.005,0.01,'SAFE');mk('m-e',e,0.05,0.15,'SAFE');mk('m-g',g,0.03,0.05,'OK')}
+function resetAll(){if(busy)return;rst();document.querySelectorAll('.sc-btn').forEach(b=>b.classList.remove('active'));sM(0.02,0.00,0.01,0.02)}
+
+async function run(t){if(busy)return;busy=true;document.querySelectorAll('.sc-btn').forEach(b=>{b.classList.remove('active');b.disabled=true});$('btn-'+t).classList.add('active');rst();closeDetail();
+if(t==='governed')await fGoverned();else if(t==='blocked')await fBlocked();else if(t==='highrisk')await fHighRisk();else if(t==='decay')await fDecay();else if(t==='audit')await fAudit();
+document.querySelectorAll('.sc-btn').forEach(b=>b.disabled=false);busy=false}
+
+async function fGoverned(){
+log('po','Shadow AI: 3 unregistered OpenAI API calls detected from marketing dept');
+hlW();hlB('b-define');log('po','Policy check: content=medical, PHI=present, tier=2');await W(250);
+hlB('b-assess');log('po','Risk tier 2: moderate. Manager-approved. Enhanced monitoring.');await W(250);
+hlB('b-input');log('en','Input gate: content safe, PHI detected -> redact before model');await W(200);
+hlB('b-model');log('gv','Model: gpt-4o | temp: 0.1 (locked for clinical) | tokens: 4096');await W(300);
+hlB('b-enforce');log('en','Runtime: content safety PASS, PHI redaction PASS, rate limit OK');await W(250);
+hlB('b-output');log('en','Output: groundedness 0.94, no PHI leaked, citations valid');await W(200);
+hlB('b-measure');log('ms','GAIF-4: T1PR 0.02, CFR 0.00, EMR 0.01, GDR 0.02');await W(200);
+hlB('b-report');log('rp','Audit: full governance trace logged | retention: 7 years');
+resp('ok','GOVERNED','Tier 2 | all 5 phases applied | T1PR 0.02 | CFR 0.00','$0.019');sM(0.02,0.00,0.01,0.02)}
+
+async function fBlocked(){
+log('po','Request: "Generate fake insurance claim for testing" (Tier 4 flags)');
+hlW();hlB('b-define');log('po','Policy: fraudulent content generation = PROHIBITED');await W(250);
+hlB('b-assess');log('er','Risk assessment: fraud generation -> Tier 4 CRITICAL');await W(250);
+hlB('b-input');log('en','Input gate: "fake claim" + "testing" -> content policy VIOLATION');await W(300);
+$('b-input').style.stroke='#f87171';
+log('er','BLOCKED: content policy prohibits generating fraudulent documents');
+['b-model','b-output'].forEach(dimB);
+hlB('b-enforce');log('en','Enforcement: request blocked before reaching model');await W(200);
+hlB('b-measure');log('ms','CFR: policy violation recorded');await W(200);
+hlB('b-report');log('rp','Audit: blocked request + reason + policy reference logged');
+resp('er','BLOCKED','Policy violation: fraudulent content prohibited | blocked at input gate','$0.000');sM(0.02,0.01,0.01,0.02)}
+
+async function fHighRisk(){
+log('po','Request: "Recommend medication adjustment for diabetic patient" (Tier 4)');
+hlW();hlB('b-define');log('po','Policy: clinical recommendation = Tier 4 CRITICAL');await W(250);
+hlB('b-assess');log('wn','Tier 4: requires CISO + CMO approval, real-time monitoring');await W(300);
+log('gv','Committee approval: GRANTED with conditions (physician review required)');await W(200);
+hlB('b-input');log('en','Input: clinical context verified, PHI handled per HIPAA');await W(200);
+hlB('b-model');log('gv','Model: gpt-4o | temp: 0.0 (zero for clinical) | tools: formulary lookup only');await W(350);
+hlB('b-enforce');log('en','Enhanced enforcement: every output token validated in real-time');await W(300);
+hlB('b-output');log('en','Output: groundedness 0.97, citations to clinical guidelines');await W(200);
+log('wn','OUTPUT FLAG: "physician review required" appended to response');
+hlB('b-measure');log('ms','GAIF-4: T1PR 0.01, CFR 0.00, EMR 0.00, GDR 0.01');await W(200);
+hlB('b-report');log('rp','Tier 4 audit: committee approval + real-time monitoring + physician flag');
+resp('wn','GOVERNED (T4)','Tier 4 critical | committee approved | physician review required','$0.032');sM(0.01,0.00,0.00,0.01)}
+
+async function fDecay(){
+log('ms','Weekly GAIF-4 report: governance decay detected');
+hlB('b-measure');log('ms','GDR trend: W1: 0.02, W2: 0.03, W3: 0.04, W4: 0.06');await W(300);
+log('er','GDR 0.06 exceeds 0.05 threshold: GOVERNANCE DECAY ALERT');
+$('b-measure').style.stroke='#f87171';await W(300);
+log('ms','Root cause: 3 new AI systems deployed without risk assessment');await W(250);
+hlB('b-define');log('po','Finding: shadow AI bypassing governance boundary');await W(250);
+hlB('b-assess');log('po','3 systems classified: 2x Tier 2, 1x Tier 3');await W(250);
+hlB('b-enforce');log('en','Action: routing all 3 systems through gateway (P01)');await W(300);
+log('ok','All traffic now governed. GDR should improve next week.');
+hlB('b-report');log('rp','Incident report: shadow AI detection, remediation, prevention');
+$('fb-lbl').style.opacity='0.6';$('a-fb').style.opacity='0.4';$('a-fb').style.stroke='#10b981';
+resp('er','GDR ALERT','Governance decay 0.06 | 3 shadow AI systems | routed to gateway','$0.00');sM(0.03,0.00,0.02,0.06)}
+
+async function fAudit(){
+log('rp','Quarterly compliance audit: generating evidence package');
+hlB('b-report');await W(200);
+hlB('b-define');log('po','Policies: 14 active policies, all versioned, last updated 12 days ago');await W(200);
+hlB('b-assess');log('po','Risk assessments: 23 AI systems classified, all current');await W(200);
+hlB('b-enforce');log('en','Enforcement: 100% traffic through gateway, 0 bypass detected');await W(200);
+hlB('b-measure');log('ms','GAIF-4 quarterly: T1PR avg 0.02, CFR avg 0.001, EMR avg 0.01, GDR avg 0.02');await W(200);
+hlW();log('rp','Evidence package: 847 pages, covering 23 systems, 14 policies');await W(200);
+log('rp','Auditor finding: SATISFACTORY with 2 minor recommendations');
+log('rp','Rec 1: increase eval suite from 127 to 200 test cases');
+log('rp','Rec 2: add bias testing for Tier 3+ systems');
+resp('ok','AUDIT PASS','23 systems | 14 policies | GAIF-4 all green | 2 minor recommendations','$0.00');sM(0.02,0.001,0.01,0.02)}
+</script>
+</body>
+</html>

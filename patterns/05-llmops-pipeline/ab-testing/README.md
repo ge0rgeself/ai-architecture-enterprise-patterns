@@ -1,5 +1,5 @@
 # A/B Testing
-**Side-by-side version comparison on live traffic.**
+**Statistical comparison of prompt/model variants with significance.**
 ## [Launch Demo](https://aman210122.github.io/ai-architecture-enterprise-patterns/patterns/05-llmops-pipeline/ab-testing/index.html)
-SVG diagram. Click components for details. 5 scenarios with cost tracking and GAIF-4 metrics.
+Unique SVG: development column (left), model registry hub (center), production column (right). Feedback loop from production back to development. 5 scenarios: prompt deploy, model swap, canary, rollback, drift.
 *[AI Architecture Enterprise Patterns](https://github.com/aman210122/ai-architecture-enterprise-patterns) | [Aman Sharma](https://linkedin.com/in/amansharmaarchitect)*

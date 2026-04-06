@@ -1,24 +1,19 @@
 # Deployment Guide: Governance-as-Architecture
-## Prerequisites: Pattern 01 (Gateway), risk classification defined, regulatory requirements identified
+## Prerequisites: Pattern 01 (Gateway) for runtime enforcement, executive sponsorship
 ## Steps
-1. Define governance policies as executable code (OPA/Rego or custom engine)
-2. Build risk classification framework: T1-T4 tiers, controls per tier
-3. Map policies to regulations (HIPAA, GDPR, EU AI Act, NIST RMF, WHO, CHAI)
-4. Deploy 25-question risk assessment across 7 domains
-5. Create model card template and enforce for every production model
-6. Implement privacy impact assessment (DPIA) workflow
-7. Configure runtime guardrail enforcement at gateway level
-8. Set up role-based + attribute-based access control for all AI systems
-9. Deploy auto-classification for data flowing through AI (PHI/PII detection)
-10. Configure GAIF-4 measurement: T1PR, CFR, EMR, GDR across all systems
-11. Set up bias monitoring: demographic fairness metrics, continuous measurement
-12. Deploy explainability: feature attribution for high-risk decisions
-13. Implement consent management: opt-in/out tracking, data subject requests
-14. Build governance dashboard: real-time compliance view for CISO/CTO
-15. Configure immutable audit trail with 7-year retention
-16. Automate stakeholder reports: board summary, regulator detail, internal audit
-17. Create incident governance playbooks: bias, PHI leak, model failure
-18. Implement change management: approval workflow proportional to risk tier
-19. Deploy continuous assurance: ongoing verification, not point-in-time audits
-20. Measure governance maturity (level 1-5) quarterly, track improvement
+1. Define policies: content policy, PHI rules, use case classification criteria
+2. Build 4-tier risk classification: scoring rubric, 25 questions, 7 domains
+3. Classify all existing AI systems: inventory + risk assessment per system
+4. Express policies as code: OPA/Rego rules, gateway configuration
+5. Configure enforcement at gateway: content safety, PHI scan, rate limits
+6. Set up input/output gates: content filter, groundedness check, PHI leak scan
+7. Deploy GAIF-4 measurement: T1PR, CFR, EMR per system, GDR weekly
+8. Build governance dashboard: real-time metrics for CISO/CTO
+9. Configure committee review process: Tier 3/4 systems need cross-functional approval
+10. Set up audit trail: immutable logging, 7-year retention
+11. Deploy shadow AI detection: network monitoring for unauthorized API calls
+12. Build vendor governance: risk assessment framework for third-party AI
+13. Configure continuous compliance: automated re-validation against updated regulations
+14. Quarterly reporting: governance effectiveness report to committee
+15. Annual: re-classify all systems, update policies, benchmark against NIST AI RMF
 *[Aman Sharma](https://linkedin.com/in/amansharmaarchitect)*

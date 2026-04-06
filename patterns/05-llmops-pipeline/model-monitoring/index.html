@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pattern 05: LLMOps Pipeline</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600;700&display=swap');
+:root{--bg:#0d1117;--bg2:#161b22;--bg3:#1c2333;--bg4:#252d3f;--text:#c9d1d9;--text2:#b8c0cc;--text3:#8b949e;--border:rgba(139,149,168,0.12);
+--dev:#818cf8;--devL:#a5b4fc;--reg:#f59e0b;--regL:#fbbf24;--prod:#10b981;--prodL:#34d399;--fb:#ec4899;
+--ok:#34d399;--err:#f87171;--warn:#fbbf24;--ops:#38bdf8;--eco:#fb923c;
+--f:'Inter',sans-serif;--m:'Fira Code',monospace}
+*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);color:var(--text);font-family:var(--f)}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 40%,rgba(129,140,248,0.03),transparent 50%),radial-gradient(ellipse at 80% 60%,rgba(16,185,129,0.03),transparent 50%);pointer-events:none}
+.pg{max-width:1440px;margin:0 auto;padding:1.2rem}
+.hdr{margin-bottom:0.8rem;display:flex;align-items:center;gap:12px;padding-bottom:0.6rem;border-bottom:1px solid var(--border)}
+.hdr-badge{background:linear-gradient(135deg,var(--dev),var(--prod));padding:5px 10px;border-radius:5px;font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#000}
+.hdr h1{font-size:20px;font-weight:800;letter-spacing:-0.3px}.hdr p{font-size:11px;color:var(--text2)}
+.sc-bar{display:flex;gap:5px;margin-bottom:0.6rem;flex-wrap:wrap;align-items:center}
+.sc-btn{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:5px 11px;cursor:pointer;font-family:var(--f);font-size:10px;color:var(--text2);transition:all 0.2s;display:flex;align-items:center;gap:4px}
+.sc-btn:hover{border-color:var(--dev);color:var(--text)}.sc-btn.active{border-color:var(--dev);color:var(--dev);background:rgba(129,140,248,0.08);font-weight:600}.sc-btn:disabled{opacity:0.3;cursor:not-allowed}
+.sc-dot{width:6px;height:6px;border-radius:50%}.sc-reset{margin-left:auto;background:none;border:1px solid var(--border);border-radius:6px;padding:4px 8px;cursor:pointer;font-family:var(--f);font-size:9px;color:var(--text3)}
+.dw{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:8px;margin-bottom:0.6rem;overflow-x:auto}
+.dw svg{width:100%;min-width:1050px;height:auto;display:block}
+svg text{font-family:'Inter',sans-serif}
+.box{rx:8;ry:8;stroke-width:1.5;cursor:pointer;transition:all 0.3s}.box:hover{filter:brightness(1.15)}.box.hl{stroke-width:2.5;filter:drop-shadow(0 0 6px currentColor)}.box.dim{opacity:0.08}
+/* Registry hub is a rounded rectangle with thick border */
+.hub{rx:14;ry:14;stroke-width:2.5;cursor:pointer;transition:all 0.3s}.hub:hover{filter:brightness(1.15)}.hub.hl{stroke-width:3.5;filter:drop-shadow(0 0 10px currentColor)}
+.arr{fill:none;stroke:#8b949e;stroke-width:1.2;opacity:0.25}.arr.li{opacity:1;stroke-width:2}.arr.li-d{opacity:1;stroke:var(--dev);stroke-width:2}.arr.li-p{opacity:1;stroke:var(--prod);stroke-width:2}.arr.li-f{opacity:1;stroke:var(--fb);stroke-width:2;stroke-dasharray:6,3}
+.bx-t{font-size:9.5px;font-weight:700;text-anchor:middle}.bx-s{font-size:7px;fill:#b8c0cc;text-anchor:middle}
+.lbl{font-size:9px;fill:#8b949e;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.gbar{rx:5;ry:5}.gbar-t{font-size:8px;font-weight:600;letter-spacing:0.5px}
+.phase-n{font-size:7px;font-weight:700;letter-spacing:0.8px;text-anchor:middle}
+.ver{font-size:6.5px;fill:#8b949e;font-family:'Fira Code',monospace;text-anchor:middle}
+.hint{font-size:5.5px;fill:#60a5fa;opacity:0.5;text-anchor:middle}
+.dp{background:var(--bg2);border:1px solid var(--border);border-radius:10px;margin-bottom:0.6rem;overflow:hidden;transition:all 0.3s}.dp.closed{max-height:0;border:none;margin:0}.dp.open{max-height:600px}
+.dp-h{padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}.dp-title{font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px}.dp-tag{font-size:8px;padding:2px 8px;border-radius:4px;font-weight:600;font-family:var(--m)}.dp-close{background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px}
+.dp-body{padding:12px 16px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}@media(max-width:900px){.dp-body{grid-template-columns:1fr}}
+.dp-sec-t{font-size:9px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--text3);margin-bottom:6px;padding-bottom:3px;border-bottom:1px solid var(--border)}
+.dp-it{font-size:10px;color:var(--text2);margin-bottom:3px;line-height:1.5;display:flex;align-items:baseline;gap:5px}.dp-it::before{content:'';width:4px;height:4px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.dp-it.ok::before{background:var(--ok)}.dp-it.warn::before{background:var(--warn)}.dp-it.info::before{background:var(--ops)}.dp-it.plat::before{background:var(--dev)}
+.rsp{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 14px;display:flex;align-items:center;gap:10px;transition:all 0.3s;margin-bottom:0.6rem;flex-wrap:wrap}
+.rsp.ok{border-color:var(--ok);background:rgba(52,211,153,0.06)}.rsp.er{border-color:var(--err);background:rgba(248,113,113,0.06)}.rsp.wn{border-color:var(--warn);background:rgba(251,191,36,0.06)}
+.rsp-c{font-family:var(--m);font-size:12px;font-weight:700}.rsp-m{font-size:10px;color:var(--text2);flex:1}.rsp-${font-family:var(--m);font-size:10px;color:var(--eco)}
+.brow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:0.6rem}@media(max-width:900px){.brow{grid-template-columns:1fr}}
+.mets{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}@media(max-width:768px){.mets{grid-template-columns:repeat(2,1fr)}}
+.met{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 10px}
+.met-l{font-size:7px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--text3);display:flex;align-items:center;gap:3px}.met-b{font-size:6px;padding:1px 4px;border-radius:2px;font-weight:600}
+.met-v{font-size:18px;font-weight:700;font-family:var(--m)}.met-bar{height:2px;border-radius:1px;background:var(--bg4);margin-top:3px;overflow:hidden}.met-f{height:100%;border-radius:1px;transition:width 0.5s}.met-n{font-size:7px;color:var(--text3);margin-top:2px}
+.log{background:var(--bg3);border:1px solid var(--border);border-radius:6px;overflow:hidden}
+.log-h{padding:5px 10px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;font-size:8px;font-weight:700;color:var(--text3)}
+.log-clr{background:none;border:1px solid var(--border);border-radius:3px;padding:1px 5px;font-size:7px;color:var(--text3);cursor:pointer;font-family:var(--f)}
+.log-b{max-height:140px;overflow-y:auto;padding:2px 0;font-family:var(--m);font-size:8px}.log-b::-webkit-scrollbar{width:2px}.log-b::-webkit-scrollbar-thumb{background:var(--bg4)}
+.lr{padding:1px 10px;display:flex;gap:6px;animation:fi 0.15s ease}@keyframes fi{from{opacity:0}to{opacity:1}}
+.lr-t{color:var(--text3);min-width:60px}.lr-p{min-width:50px;font-weight:600}.lr-m{color:var(--text2);flex:1}
+.lr-p.dv{color:var(--dev)}.lr-p.rg{color:var(--reg)}.lr-p.pr{color:var(--prod)}.lr-p.fb{color:var(--fb)}.lr-p.ok{color:var(--ok)}.lr-p.er{color:var(--err)}.lr-p.wn{color:var(--warn)}.lr-p.ec{color:var(--eco)}
+.footer{text-align:center;padding:0.6rem 0;font-size:8px;color:var(--text3)}.footer a{color:var(--dev);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="pg">
+<div class="hdr"><div class="hdr-badge">Pattern 05</div><div><h1>Model Monitoring</h1><p>Continuous production monitoring: quality, latency percentiles, error rates, cost per query. Click any phase for details.</p></div></div>
+
+<div class="sc-bar">
+<button class="sc-btn" onclick="run('deploy')" id="btn-deploy"><div class="sc-dot" style="background:var(--ok)"></div>Prompt deploy</button>
+<button class="sc-btn" onclick="run('swap')" id="btn-swap"><div class="sc-dot" style="background:var(--dev)"></div>Model swap</button>
+<button class="sc-btn" onclick="run('canary')" id="btn-canary"><div class="sc-dot" style="background:var(--warn)"></div>Canary rollout</button>
+<button class="sc-btn" onclick="run('rollback')" id="btn-rollback"><div class="sc-dot" style="background:var(--err)"></div>Rollback</button>
+<button class="sc-btn" onclick="run('drift')" id="btn-drift"><div class="sc-dot" style="background:var(--fb)"></div>Drift detected</button>
+<button class="sc-reset" onclick="resetAll()">&#8634; Reset</button></div>
+
+<div class="dw">
+<svg viewBox="0 0 1050 520" xmlns="http://www.w3.org/2000/svg">
+<text x="525" y="16" text-anchor="middle" fill="#8b949e" style="font-size:9px;font-style:italic">Click any lifecycle phase for full details</text>
+
+<rect class="gbar" x="10" y="24" width="1030" height="22" fill="rgba(129,140,248,0.08)" stroke="rgba(129,140,248,0.18)"/>
+<text class="gbar-t" x="22" y="38" fill="#818cf8">GOVERNANCE</text><text class="gbar-t" x="115" y="38" fill="#8b949e">Prompt Versioning | Model Approval | Eval Gate | Deploy Policy | Compliance Checkpoint | Audit Trail</text>
+<rect class="gbar" x="10" y="50" width="1030" height="20" fill="rgba(16,185,129,0.06)" stroke="rgba(16,185,129,0.12)"/>
+<text class="gbar-t" x="22" y="63" fill="#10b981">OBSERVABILITY</text><text class="gbar-t" x="120" y="63" fill="#8b949e">Prompt Versions | Model Metrics | Deploy Status | Quality Scores | Cost per Model | Drift Alerts</text>
+
+<!-- DEVELOPMENT COLUMN (left) -->
+<text class="lbl" x="30" y="90" fill="#818cf8">DEVELOP</text>
+
+<rect class="box" id="b-prompt" x="20" y="100" width="190" height="68" fill="#1c2333" stroke="#818cf8" onclick="detail('prompt')"/>
+<text class="bx-t" x="115" y="122" fill="#818cf8">Prompt Engineering</text>
+<text class="bx-s" x="115" y="136">Versioned prompts in git</text>
+<text class="bx-s" x="115" y="148">System prompt + few-shot + template</text>
+<text class="ver" x="115" y="162" id="pv">v3.2</text>
+
+<path class="arr" id="a-pe" d="M115 168 L115 186"/>
+
+<rect class="box" id="b-eval" x="20" y="186" width="190" height="68" fill="#1c2333" stroke="#818cf8" onclick="detail('eval')"/>
+<text class="bx-t" x="115" y="208" fill="#818cf8">Eval Suite</text>
+<text class="bx-s" x="115" y="222">Golden dataset + rubric</text>
+<text class="bx-s" x="115" y="234">Quality gate: score > 0.85</text>
+<text class="ver" x="115" y="248" id="ev">127 test cases</text>
+
+<path class="arr" id="a-eb" d="M115 254 L115 272"/>
+
+<rect class="box" id="b-build" x="20" y="272" width="190" height="68" fill="#1c2333" stroke="#818cf8" onclick="detail('build')"/>
+<text class="bx-t" x="115" y="294" fill="#818cf8">Build + Package</text>
+<text class="bx-s" x="115" y="308">Prompt + model config + guardrails</text>
+<text class="bx-s" x="115" y="320">Immutable artifact: SHA-256 hash</text>
+<text class="ver" x="115" y="334" id="bv">build-2024-0418</text>
+
+<!-- Arrow from Build to Registry -->
+<path class="arr" id="a-br" d="M210 306 L390 260" marker-end="url(#ah)"/>
+
+<!-- CENTRAL MODEL REGISTRY (unique hub shape) -->
+<rect class="hub" id="b-reg" x="390" y="170" width="260" height="180" fill="#161b22" stroke="#f59e0b" onclick="detail('reg')"/>
+<text x="520" y="200" text-anchor="middle" fill="#f59e0b" style="font-size:13px;font-weight:800">Model Registry</text>
+<text x="520" y="220" text-anchor="middle" fill="#b8c0cc" style="font-size:8px">Versioned prompts + model configs + eval results</text>
+
+<!-- Registry contents (mini cards inside) -->
+<rect x="405" y="232" width="110" height="36" fill="#1c2333" stroke="rgba(245,158,11,0.3)" rx="4"/>
+<text x="460" y="248" text-anchor="middle" fill="#fbbf24" style="font-size:7.5px;font-weight:600">Prompts</text>
+<text x="460" y="260" text-anchor="middle" fill="#8b949e" style="font-size:6px" id="reg-p">real-time</text>
+
+<rect x="525" y="232" width="110" height="36" fill="#1c2333" stroke="rgba(245,158,11,0.3)" rx="4"/>
+<text x="580" y="248" text-anchor="middle" fill="#fbbf24" style="font-size:7.5px;font-weight:600">Models</text>
+<text x="580" y="260" text-anchor="middle" fill="#8b949e" style="font-size:6px" id="reg-m">5pct sample</text>
+
+<rect x="405" y="278" width="110" height="36" fill="#1c2333" stroke="rgba(245,158,11,0.3)" rx="4"/>
+<text x="460" y="294" text-anchor="middle" fill="#fbbf24" style="font-size:7.5px;font-weight:600">Eval Results</text>
+<text x="460" y="306" text-anchor="middle" fill="#8b949e" style="font-size:6px" id="reg-e">127 golden</text>
+
+<rect x="525" y="278" width="110" height="36" fill="#1c2333" stroke="rgba(245,158,11,0.3)" rx="4"/>
+<text x="580" y="294" text-anchor="middle" fill="#fbbf24" style="font-size:7.5px;font-weight:600">Guardrails</text>
+<text x="580" y="306" text-anchor="middle" fill="#8b949e" style="font-size:6px" id="reg-g">6 rule sets</text>
+
+<text x="520" y="340" text-anchor="middle" fill="#8b949e" style="font-size:6.5px;font-style:italic">Single source of truth for all LLM artifacts</text>
+<text class="hint" x="520" y="354">&#9432; click for details</text>
+
+<!-- Arrow from Registry to Deploy -->
+<path class="arr" id="a-rd" d="M650 260 L830 306" marker-end="url(#ah)"/>
+
+<!-- PRODUCTION COLUMN (right) -->
+<text class="lbl" x="845" y="90" fill="#10b981">PRODUCTION</text>
+
+<rect class="box" id="b-deploy" x="830" y="272" width="190" height="68" fill="#1c2333" stroke="#10b981" onclick="detail('deploy')"/>
+<text class="bx-t" x="925" y="294" fill="#10b981">Deploy</text>
+<text class="bx-s" x="925" y="308">Canary -> staged -> full rollout</text>
+<text class="bx-s" x="925" y="320">Blue/green with instant rollback</text>
+<text class="ver" x="925" y="334" id="dv">canary 10%</text>
+
+<path class="arr" id="a-dm" d="M925 272 L925 254"/>
+
+<rect class="box" id="b-monitor" x="830" y="186" width="190" height="68" fill="#1c2333" stroke="#10b981" onclick="detail('monitor')"/>
+<text class="bx-t" x="925" y="208" fill="#10b981">Monitor</text>
+<text class="bx-s" x="925" y="222">Quality drift, latency, cost, errors</text>
+<text class="bx-s" x="925" y="234">Alert on degradation</text>
+<text class="ver" x="925" y="248" id="mv">quality: 0.91</text>
+
+<path class="arr" id="a-mo" d="M925 186 L925 168"/>
+
+<rect class="box" id="b-operate" x="830" y="100" width="190" height="68" fill="#1c2333" stroke="#10b981" onclick="detail('operate')"/>
+<text class="bx-t" x="925" y="122" fill="#10b981">Operate</text>
+<text class="bx-s" x="925" y="136">A/B test, traffic split, feature flags</text>
+<text class="bx-s" x="925" y="148">Rollback, scale, rotate secrets</text>
+<text class="ver" x="925" y="162" id="ov">stable</text>
+
+<!-- FEEDBACK LOOP (bottom, connecting production back to development) -->
+<path class="arr" id="a-fb" d="M830 134 Q780 80 520 80 Q260 80 210 134" stroke-dasharray="6,3" opacity="0.12"/>
+<text x="520" y="76" text-anchor="middle" fill="#ec4899" style="font-size:7.5px;font-weight:600" opacity="0.25" id="fb-lbl">FEEDBACK LOOP: production quality signals improve prompts, eval suites, and model selection</text>
+
+<!-- CI/CD bar at bottom -->
+<rect class="gbar" x="20" y="380" width="1000" height="28" fill="rgba(56,189,248,0.06)" stroke="rgba(56,189,248,0.15)" rx="6"/>
+<text x="520" y="398" text-anchor="middle" fill="#38bdf8" style="font-size:9px;font-weight:700">CI/CD FOR AI</text>
+<text x="520" y="400" text-anchor="middle" fill="#8b949e" style="font-size:0px">Prompt test in PR | Eval gate in CI | Canary deploy in CD | Auto-rollback on quality drop</text>
+
+<!-- CI/CD sub-items -->
+<text x="180" y="398" text-anchor="middle" fill="#8b949e" style="font-size:7px">Prompt test in PR</text>
+<text x="400" y="398" text-anchor="middle" fill="#8b949e" style="font-size:7px">Eval gate in CI</text>
+<text x="600" y="398" text-anchor="middle" fill="#8b949e" style="font-size:7px">Canary deploy in CD</text>
+<text x="840" y="398" text-anchor="middle" fill="#8b949e" style="font-size:7px">Auto-rollback on quality drop</text>
+
+<rect class="gbar" x="10" y="430" width="1030" height="20" fill="rgba(56,189,248,0.06)" stroke="rgba(56,189,248,0.12)"/>
+<text class="gbar-t" x="22" y="444" fill="#38bdf8">OPERATIONS</text><text class="gbar-t" x="115" y="444" fill="#8b949e">Prompt Rollback | Model Swap | Canary Split | A/B Test | Feature Flags | Secret Rotation | Scale</text>
+<rect class="gbar" x="10" y="454" width="1030" height="20" fill="rgba(251,146,60,0.06)" stroke="rgba(251,146,60,0.12)"/>
+<text class="gbar-t" x="22" y="468" fill="#fb923c">ECONOMICS</text><text class="gbar-t" x="115" y="468" fill="#8b949e">Model Cost Comparison | Token/$ per Model | Eval Compute Cost | Deploy Infra | Canary Overhead</text>
+
+<defs><marker id="ah" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#8b949e" stroke-width="1"/></marker></defs>
+</svg>
+</div>
+
+<div class="dp closed" id="dp"><div class="dp-h"><div class="dp-title" id="dp-title">Component</div><button class="dp-close" onclick="closeDetail()">&#10005;</button></div><div class="dp-body" id="dp-body"></div></div>
+<div class="rsp" id="rsp"><span class="rsp-c" id="rsp-c">---</span><span class="rsp-m" id="rsp-m">Click any lifecycle phase, or run a scenario</span><span class="rsp-$" id="rsp-$"></span></div>
+
+<div class="brow">
+<div class="mets">
+<div class="met"><div class="met-l">T1PR <span class="met-b" id="mb-t" style="background:rgba(52,211,153,0.12);color:#34d399">SAFE</span></div><div class="met-v" id="m-t" style="color:#34d399">0.02</div><div class="met-bar"><div class="met-f" id="mf-t" style="width:2%;background:#34d399"></div></div><div class="met-n">Bad prompts in production</div></div>
+<div class="met"><div class="met-l">CFR <span class="met-b" id="mb-c" style="background:rgba(52,211,153,0.12);color:#34d399">SAFE</span></div><div class="met-v" id="m-c" style="color:#34d399">0.00</div><div class="met-bar"><div class="met-f" id="mf-c" style="width:0%;background:#34d399"></div></div><div class="met-n">Unapproved deployments</div></div>
+<div class="met"><div class="met-l">EMR <span class="met-b" id="mb-e" style="background:rgba(52,211,153,0.12);color:#34d399">SAFE</span></div><div class="met-v" id="m-e" style="color:#34d399">0.01</div><div class="met-bar"><div class="met-f" id="mf-e" style="width:1%;background:#34d399"></div></div><div class="met-n">Quality regression</div></div>
+<div class="met"><div class="met-l">GDR <span class="met-b" id="mb-g" style="background:rgba(52,211,153,0.12);color:#34d399">OK</span></div><div class="met-v" id="m-g" style="color:#34d399">0.01</div><div class="met-bar"><div class="met-f" id="mf-g" style="width:1%;background:#34d399"></div></div><div class="met-n">Process decay</div></div>
+</div>
+<div class="log"><div class="log-h"><span>LLMOps Pipeline Log</span><button class="log-clr" onclick="clearLog()">Clear</button></div><div class="log-b" id="logB"></div></div>
+</div>
+<div class="footer"><a href="https://github.com/aman210122/ai-architecture-enterprise-patterns">GitHub</a> | <a href="https://linkedin.com/in/amansharmaarchitect">Aman Sharma</a> | <a href="https://github.com/aman210122/gaif-governance-observatory">GAIF Observatory</a></div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);const W=ms=>new Promise(r=>setTimeout(r,ms));let busy=false;
+const DETAILS={
+prompt:{title:'Prompt Engineering',tag:'DEVELOP',tagColor:'#818cf8',sections:[{title:'What It Does',items:[{t:'System prompts versioned in git with PR review',c:'info'},{t:'Few-shot examples curated and versioned per prompt',c:'info'},{t:'Prompt templates with variable injection (safe)',c:'info'},{t:'A/B variants tracked separately for comparison',c:'info'}]},{title:'Versioning Practice',items:[{t:'Every prompt change is a PR with diff review',c:'ok'},{t:'Prompt versions: v3.2 (current), v3.1 (rollback), v2.x (archived)',c:'ok'},{t:'Semantic versioning: major (behavior change), minor (improvement), patch (fix)',c:'ok'},{t:'Prompt-model compatibility matrix maintained',c:'ok'}]},{title:'Anti-Patterns',items:[{t:'Prompts hardcoded in application code (not versioned)',c:'warn'},{t:'No A/B testing (deploy and hope)',c:'warn'},{t:'Same prompt for all models (prompt-model mismatch)',c:'warn'}]}]},
+eval:{title:'Evaluation Suite',tag:'DEVELOP',tagColor:'#818cf8',sections:[{title:'What It Does',items:[{t:'Golden dataset: 127 test cases with expected outputs',c:'info'},{t:'Quality rubric: groundedness, relevance, safety, format',c:'info'},{t:'Regression tests: ensure new prompts do not break old cases',c:'info'},{t:'Quality gate: score must exceed 0.85 to proceed to build',c:'info'}]},{title:'Eval Framework',items:[{t:'MLflow Eval / RAGAS / custom rubric per use case',c:'ok'},{t:'Human eval: 20% of test cases reviewed by SME',c:'ok'},{t:'Adversarial cases: 15 red team prompts in every suite',c:'ok'},{t:'Automated: runs in CI on every PR',c:'ok'}]},{title:'Platform Mapping',items:[{t:'Databricks: MLflow Eval with custom metrics',c:'plat'},{t:'Azure: AI Foundry Eval with built-in rubrics',c:'plat'},{t:'AWS: Bedrock Eval with model judge',c:'plat'},{t:'OSS: RAGAS + DeepEval + custom scripts',c:'plat'}]}]},
+build:{title:'Build + Package',tag:'DEVELOP',tagColor:'#818cf8',sections:[{title:'What It Does',items:[{t:'Packages prompt + model config + guardrails into immutable artifact',c:'info'},{t:'SHA-256 hash for integrity verification',c:'info'},{t:'Includes eval results, approval chain, metadata',c:'info'}]},{title:'Artifact Contents',items:[{t:'system_prompt.txt (versioned)',c:'ok'},{t:'model_config.json (model, temp, max_tokens, tools)',c:'ok'},{t:'guardrails.json (content policy, PHI rules)',c:'ok'},{t:'eval_results.json (scores, test case results)',c:'ok'},{t:'approval.json (who approved, when, conditions)',c:'ok'}]},{title:'Anti-Patterns',items:[{t:'No immutable artifact (deploy from local machine)',c:'warn'},{t:'No eval results bundled (cannot audit what was tested)',c:'warn'},{t:'Mutable artifacts (someone changes after approval)',c:'warn'}]}]},
+reg:{title:'Model Registry',tag:'REGISTRY',tagColor:'#f59e0b',sections:[{title:'What It Does',items:[{t:'Single source of truth for all LLM artifacts',c:'info'},{t:'Stores: prompts, model configs, eval results, guardrails',c:'info'},{t:'Versioned with full lineage and approval chain',c:'info'},{t:'Deployment targets reference registry, not source code',c:'info'}]},{title:'Contents',items:[{t:'14 prompt versions (3 active, 11 archived)',c:'ok'},{t:'5pct sample models (claude-sonnet, gpt-4o, llama-3.1, dbrx)',c:'ok'},{t:'127 golden test cases across 6 eval suites',c:'ok'},{t:'6 guardrail rule sets (content, PHI, PII, safety, format, cost)',c:'ok'}]},{title:'Platform Mapping',items:[{t:'Databricks: MLflow Model Registry + Unity Catalog',c:'plat'},{t:'Azure: AI Foundry Model Catalog + Managed Endpoints',c:'plat'},{t:'AWS: SageMaker Model Registry + Bedrock',c:'plat'},{t:'OSS: MLflow + DVC + custom registry',c:'plat'}]}]},
+deploy:{title:'Deploy',tag:'PRODUCTION',tagColor:'#10b981',sections:[{title:'What It Does',items:[{t:'Canary -> staged -> full rollout deployment strategy',c:'info'},{t:'Blue/green with instant rollback capability',c:'info'},{t:'Traffic split: 10% canary, 90% stable',c:'info'},{t:'Auto-rollback if quality drops below threshold',c:'info'}]},{title:'Deploy Strategy',items:[{t:'Canary: 10% traffic to new version, compare quality',c:'ok'},{t:'Staged: 10% -> 25% -> 50% -> 100% over 4 hours',c:'ok'},{t:'Rollback: instant switch back to previous version',c:'ok'},{t:'Feature flags: enable/disable per team or user segment',c:'ok'}]},{title:'Rollback Triggers',items:[{t:'Quality score drops > 5% from baseline',c:'warn'},{t:'Error rate exceeds 2% (vs < 0.5% normal)',c:'warn'},{t:'Latency P95 exceeds 2x baseline',c:'warn'},{t:'Any safety violation detected',c:'warn'}]}]},
+monitor:{title:'Monitor',tag:'PRODUCTION',tagColor:'#10b981',sections:[{title:'What It Does',items:[{t:'Continuous quality measurement on production traffic',c:'info'},{t:'Drift detection: quality, latency, cost, topic',c:'info'},{t:'Alert on degradation before users notice',c:'info'}]},{title:'Metrics Tracked',items:[{t:'Quality: groundedness score (sampled, 5% of traffic)',c:'ok'},{t:'Latency: P50, P95, P99 per model per endpoint',c:'ok'},{t:'Cost: tokens per query, cost per query, daily spend',c:'ok'},{t:'Errors: rate, type distribution, trending',c:'ok'},{t:'Drift: 7-day rolling quality average vs baseline',c:'ok'}]},{title:'Alert Rules',items:[{t:'Quality < 0.80 (baseline 0.91): ALERT',c:'warn'},{t:'Latency P95 > 8s (baseline 4s): ALERT',c:'warn'},{t:'Daily cost > $500 (budget $400): ALERT',c:'warn'},{t:'Error rate > 2%: AUTO-ROLLBACK',c:'warn'}]}]},
+operate:{title:'Operate',tag:'PRODUCTION',tagColor:'#10b981',sections:[{title:'What It Does',items:[{t:'Day-to-day operations: A/B tests, traffic splits, feature flags',c:'info'},{t:'Rollback, scale, rotate secrets, update guardrails',c:'info'},{t:'Incident response: detect, mitigate, post-mortem',c:'info'}]},{title:'Operational Tasks',items:[{t:'A/B test: compare prompt v3.2 vs v3.3 on 50/50 split',c:'ok'},{t:'Feature flags: enable new capability for beta users only',c:'ok'},{t:'Scale: auto-scale inference endpoints based on traffic',c:'ok'},{t:'Secrets: rotate API keys every 90 days',c:'ok'}]},{title:'Incident Response',items:[{t:'Detect: monitoring alerts on quality/safety/cost',c:'warn'},{t:'Mitigate: auto-rollback or manual intervention',c:'warn'},{t:'Post-mortem: root cause, timeline, prevention',c:'warn'}]}]}
+};
+
+function detail(id){const d=DETAILS[id];if(!d)return;$('dp-title').innerHTML=`${d.title} <span class="dp-tag" style="background:${d.tagColor}22;color:${d.tagColor}">${d.tag}</span>`;let h='';d.sections.forEach(s=>{h+=`<div><div class="dp-sec-t">${s.title}</div>`;s.items.forEach(i=>{h+=`<div class="dp-it ${i.c}">${i.t}</div>`});h+='</div>'});$('dp-body').innerHTML=h;$('dp').className='dp open'}
+function closeDetail(){$('dp').className='dp closed'}
+
+const BOXES=['b-prompt','b-eval','b-build','b-reg','b-deploy','b-monitor','b-operate'];
+const ARRS=['a-pe','a-eb','a-br','a-rd','a-dm','a-mo'];
+
+function log(tp,msg){const el=$('logB');const ts=new Date().toLocaleTimeString('en-US',{hour12:false})+'.'+String(new Date().getMilliseconds()).padStart(3,'0');const r=document.createElement('div');r.className='lr';r.innerHTML=`<span class="lr-t">${ts}</span><span class="lr-p ${tp}">${tp.toUpperCase()}</span><span class="lr-m">${msg}</span>`;el.insertBefore(r,el.firstChild);if(el.children.length>50)el.removeChild(el.lastChild)}
+function clearLog(){$('logB').innerHTML=''}
+function hlB(id){$(id)?.classList.add('hl')}
+function dimB(id){$(id)?.classList.add('dim')}
+function litA(id,c){const e=$(id);if(e){e.classList.add(c||'li');e.style.opacity='1'}}
+function rst(){BOXES.forEach(id=>{const e=$(id);if(e)e.classList.remove('hl','dim')});ARRS.forEach(id=>{const e=$(id);if(e){e.className='arr';e.style=''}});$('a-fb').style='';$('fb-lbl').style.opacity='0.25';$('pv').textContent='v3.2';$('ev').textContent='127 test cases';$('bv').textContent='build-2024-0418';$('dv').textContent='canary 10%';$('mv').textContent='quality: 0.91';$('ov').textContent='stable';$('rsp').className='rsp';$('rsp-c').textContent='---';$('rsp-m').textContent='';$('rsp-$').textContent=''}
+function resp(c,code,msg,cost){$('rsp').className='rsp '+c;$('rsp-c').textContent=code;$('rsp-m').textContent=msg;$('rsp-$').textContent=cost||''}
+function sM(t,c,e,g){const mk=(id,v,thL,thH,safe)=>{$(id).textContent=v.toFixed(2);const f=id.replace('m-','mf-'),b=id.replace('m-','mb-');const ok=v<=thL,mid=v<=thH;$(f).style.width=Math.min(v*500,100)+'%';$(f).style.background=ok?'#34d399':mid?'#fbbf24':'#f87171';$(id).style.color=ok?'#34d399':mid?'#fbbf24':'#f87171';$(b).textContent=ok?safe:mid?'WARN':'CRIT';$(b).style.background=ok?'rgba(52,211,153,0.12)':mid?'rgba(251,191,36,0.12)':'rgba(248,113,113,0.12)';$(b).style.color=ok?'#34d399':mid?'#fbbf24':'#f87171'};mk('m-t',t,0.05,0.15,'SAFE');mk('m-c',c,0.005,0.01,'SAFE');mk('m-e',e,0.05,0.15,'SAFE');mk('m-g',g,0.03,0.05,'OK')}
+function resetAll(){if(busy)return;rst();document.querySelectorAll('.sc-btn').forEach(b=>b.classList.remove('active'));sM(0.02,0.00,0.01,0.01)}
+
+async function run(t){if(busy)return;busy=true;document.querySelectorAll('.sc-btn').forEach(b=>{b.classList.remove('active');b.disabled=true});$('btn-'+t).classList.add('active');rst();closeDetail();
+if(t==='deploy')await fDeploy();else if(t==='swap')await fSwap();else if(t==='canary')await fCanary();else if(t==='rollback')await fRollback();else if(t==='drift')await fDrift();
+document.querySelectorAll('.sc-btn').forEach(b=>b.disabled=false);busy=false}
+
+async function fDeploy(){
+log('dv','Monitor: gpt-4o P50 1.2s, P95 3.8s, P99 7.1s');
+hlB('b-prompt');$('pv').textContent='v3.3';await W(250);
+litA('a-pe','li-d');hlB('b-eval');log('dv','Running eval suite: 127 test cases against v3.3');await W(400);
+log('ok','Eval: 119/127 pass (93.7%) | threshold: 85% | PASS');$('ev').textContent='93.7% pass';await W(250);
+litA('a-eb','li-d');hlB('b-build');log('dv','Building artifact: prompt v3.3 + gpt-4o + guardrails v2');await W(300);
+$('bv').textContent='build-2024-0419';log('dv','Artifact SHA: a7f3c9...e2b1');await W(200);
+litA('a-br','li-d');hlB('b-reg');log('rg','Registered: prompt v3.3 | model gpt-4o | eval 93.7%');await W(250);
+$('reg-p').textContent='15 versions';litA('a-rd','li-p');await W(200);
+hlB('b-deploy');log('pr','Deploying canary: 10% traffic to v3.3, 90% on v3.2');$('dv').textContent='canary 10%';await W(400);
+litA('a-dm','li-p');hlB('b-monitor');log('pr','Cost: 0.018 per query avg, 412 per day, on budget');$('mv').textContent='quality: 0.93';await W(300);
+log('pr','Promoting: 10% -> 25% -> 50% -> 100%');$('dv').textContent='100% v3.3';await W(300);
+litA('a-mo','li-p');hlB('b-operate');$('ov').textContent='v3.3 stable';
+log('ec','Deploy cost: eval compute $2.40 + canary overhead $0.80 = $3.20');
+resp('ok','DEPLOYED','Prompt v3.3 | eval 93.7% | canary +2.2% quality | full rollout','$3.20');sM(0.02,0.00,0.01,0.01)}
+
+async function fSwap(){
+log('rg','Request: swap model from gpt-4o to claude-sonnet-4 (cost reduction)');
+hlB('b-reg');$('reg-m').textContent='swap pending';await W(250);
+hlB('b-eval');log('dv','Re-running eval suite with same prompt v3.2 on claude-sonnet-4');await W(400);
+log('ok','Eval on claude-sonnet: 121/127 (95.3%) vs gpt-4o 119/127 (93.7%)');await W(250);
+log('ok','Quality EQUAL OR BETTER on new model');
+hlB('b-build');log('dv','New artifact: prompt v3.2 + claude-sonnet-4 + guardrails v2');await W(300);
+litA('a-br','li-d');hlB('b-reg');$('reg-m').textContent='5 approved';await W(200);
+litA('a-rd','li-p');hlB('b-deploy');log('pr','Canary: 10% on claude-sonnet, 90% on gpt-4o');$('dv').textContent='canary swap';await W(400);
+hlB('b-monitor');log('pr','Model comparison: claude-sonnet $0.008/call vs gpt-4o $0.018/call');$('mv').textContent='quality: 0.95';await W(300);
+log('ec','Cost saving: $0.010/call x 10K calls/day = $100/day saved');
+hlB('b-operate');$('ov').textContent='claude-sonnet';
+resp('ok','SWAPPED','gpt-4o -> claude-sonnet-4 | quality +1.6% | cost -44% | $100/day saved','$100/day');sM(0.02,0.00,0.01,0.01)}
+
+async function fCanary(){
+log('pr','Canary deployment: testing prompt v3.4 at 10% traffic');
+hlB('b-deploy');$('dv').textContent='canary 10%';await W(300);
+hlB('b-monitor');log('pr','Canary quality after 1h: 0.87 (baseline 0.91, -4.4%)');$('mv').textContent='quality: 0.87';await W(400);
+log('wn','Quality drop detected but within tolerance (-5% threshold)');await W(300);
+log('pr','Extending canary: 2h more observation before promotion');await W(400);
+log('pr','Canary quality after 3h: 0.84 (baseline 0.91, -7.7%)');$('mv').textContent='quality: 0.84';await W(300);
+log('er','Quality below threshold (-5%): canary REJECTED');
+$('dv').textContent='rejected';$('b-deploy').style.stroke='#f87171';
+log('pr','Reverting: 100% traffic back to v3.2 (stable)');await W(200);
+$('dv').textContent='v3.2 stable';$('b-deploy').style.stroke='#10b981';
+$('fb-lbl').style.opacity='0.8';$('a-fb').style.opacity='0.5';$('a-fb').style.stroke='#ec4899';
+log('fb','Feedback: v3.4 failed canary, reverting to v3.2. Root cause analysis needed.');
+resp('wn','REJECTED','Canary v3.4: quality 0.84 (-7.7% from baseline) | auto-rejected | stable on v3.2','$1.60');sM(0.02,0.00,0.04,0.01)}
+
+async function fRollback(){
+log('er','ALERT: production quality dropped to 0.72 (baseline 0.91)');
+hlB('b-monitor');$('mv').textContent='quality: 0.72!';$('b-monitor').style.stroke='#f87171';await W(300);
+log('er','Auto-rollback triggered: quality > 5% below baseline');
+hlB('b-deploy');$('dv').textContent='ROLLING BACK';$('b-deploy').style.stroke='#f87171';await W(300);
+log('pr','Switching: v3.3 (failing) -> v3.2 (last known good)');await W(250);
+hlB('b-reg');log('rg','Registry: v3.2 artifact loaded, SHA verified');await W(200);
+$('dv').textContent='v3.2 restored';$('b-deploy').style.stroke='#10b981';
+$('mv').textContent='quality: 0.91';$('b-monitor').style.stroke='#10b981';
+log('ok','Rollback complete: v3.2 serving 100% traffic');await W(200);
+log('pr','Quality restored: 0.91 (back to baseline)');
+$('fb-lbl').style.opacity='0.8';$('a-fb').style.opacity='0.5';$('a-fb').style.stroke='#ec4899';
+log('fb','Post-mortem: v3.3 degradation caused by upstream model provider update');
+resp('er','ROLLED BACK','v3.3 quality 0.72 -> auto-rollback to v3.2 (0.91) | 12s recovery','$0.00');sM(0.02,0.00,0.08,0.02)}
+
+async function fDrift(){
+log('pr','Weekly drift report: 7-day quality rolling average');
+hlB('b-monitor');await W(300);
+log('pr','Day 1: 0.91 | Day 2: 0.90 | Day 3: 0.89 | Day 4: 0.87');await W(300);
+log('wn','Drift detected: quality declining 0.01/day for 4 consecutive days');
+$('mv').textContent='drift: -0.01/d';$('b-monitor').style.stroke='#fbbf24';await W(300);
+log('wn','Root cause analysis: model provider silently updated model weights');await W(300);
+$('fb-lbl').style.opacity='0.8';$('a-fb').style.opacity='0.5';$('a-fb').style.stroke='#ec4899';
+log('fb','Feedback loop: triggering re-evaluation against golden dataset');await W(200);
+hlB('b-eval');log('dv','Re-running eval suite with current production model');await W(400);
+log('wn','Current model: 108/127 (85.0%) vs registered: 119/127 (93.7%)');
+log('er','Model provider update degraded quality by 8.7%');await W(300);
+hlB('b-reg');log('rg','Action: switch to backup model (claude-sonnet) pending eval');
+resp('wn','DRIFT','Quality drift -0.01/day for 4 days | model provider silent update | triggering model swap','$0.00');sM(0.02,0.00,0.05,0.03)}
+</script>
+</body>
+</html>
