@@ -1,6 +1,6 @@
 # AI Architecture Enterprise Patterns
 
-**174 interactive SVG architecture diagrams for enterprise AI. Click any component for full details. Run scenarios to watch data flow through the architecture.**
+**186 interactive SVG architecture diagrams for enterprise AI. Click any component for full details. Run scenarios to watch data flow through the architecture.**
 
 Every diagram includes: spatial box-and-arrow layout, click-to-detail panels (configuration, platform mapping, anti-patterns, GAIF-4 relevance), 5 animated scenarios, 4 cross-cutting governance bars, and per-query cost tracking.
 
@@ -42,12 +42,13 @@ Governance: [GAIF Governance Observatory](https://github.com/aman210122/gaif-gov
 | 11 | [AI Security Architecture](patterns/11-ai-security-architecture/) | 12 | How do I defend against AI-specific threats? |
 | 12 | [Enterprise AI Platform](patterns/12-enterprise-ai-platform/) | 12 | What infrastructure do all AI patterns run on? |
 
-### Product Layer
+### Product and Operations Layer
 
 | # | Pattern | Variants | What It Answers |
 |---|---------|----------|-----------------|
 | 13 | [Observability for AI](patterns/13-observability-for-ai/) | 12 | How do I know if my AI systems are working well? |
 | 14 | [AI Product Architecture](patterns/14-ai-product-architecture/) | 12 | What does a complete AI product look like? |
+| 15 | [Migration and Interoperability](patterns/15-migration-interoperability/) | 12 | How do I migrate AI systems across clouds and providers? |
 
 ---
 
@@ -77,9 +78,9 @@ No pattern works alone. Here is how they compose for real products:
                            |
               observed and operated on
                            |
-    +----------+-----------+
-    |          |           |
-[12. Platform] [13. Observability]
+    +----------+-----------+----------+
+    |          |           |          |
+[12. Platform] [13. Observ] [15. Migration]
 [01. Gateway]
 ```
 
@@ -97,6 +98,7 @@ No pattern works alone. Here is how they compose for real products:
 | Security | P11 (AI Security) | Protect against prompt injection in clinical context |
 | Platform | P12 (Enterprise Platform) | Databricks + Azure AI Foundry infrastructure |
 | Observability | P13 (Observability) | Monitor clinical quality and safety metrics |
+| Migration | P15 (Migration) | Migrate from legacy to new platform |
 | Governance | P06 (Governance) | GAIF-4 metrics, HIPAA compliance, audit trail |
 | Gateway | P01 (Gateway) | Single control point for all model calls |
 
