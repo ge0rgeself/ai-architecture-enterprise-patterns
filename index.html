@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Architecture Enterprise Patterns</title>
+<style>
+  :root { --bg:#0b0d12; --fg:#e7ecf3; --mut:#8b95a7; --card:#151923; --accent:#6ee7ff; --border:#232838; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; line-height:1.5; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
+  header { margin-bottom: 28px; }
+  h1 { margin:0 0 6px; font-size: 28px; letter-spacing: -0.01em; }
+  .sub { color: var(--mut); font-size: 14px; }
+  .sub a { color: var(--accent); text-decoration: none; }
+  .search { margin: 20px 0 24px; }
+  .search input { width: 100%; background: var(--card); color: var(--fg); border: 1px solid var(--border); padding: 12px 14px; border-radius: 10px; font-size: 15px; }
+  .search input:focus { outline: none; border-color: var(--accent); }
+  details.pattern { background: var(--card); border:1px solid var(--border); border-radius: 12px; margin-bottom: 10px; }
+  details.pattern[open] { border-color: #2c3449; }
+  details.pattern > summary { cursor: pointer; padding: 14px 16px; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  details.pattern > summary::-webkit-details-marker { display: none; }
+  .title { font-weight: 600; font-size: 16px; }
+  .count { color: var(--mut); font-size: 12px; background:#1d2230; padding: 2px 8px; border-radius: 999px; }
+  .desc { color: var(--mut); padding: 0 16px 12px; font-size: 13px; }
+  .variants { padding: 0 16px 16px; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; }
+  .variants a { display:block; padding: 8px 10px; background:#10141d; border:1px solid var(--border); border-radius: 8px; color: var(--fg); text-decoration: none; font-size: 13px; }
+  .variants a:hover { border-color: var(--accent); color: var(--accent); }
+  .hidden { display: none !important; }
+  footer { margin-top: 40px; color: var(--mut); font-size: 12px; }
+  footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>AI Architecture — Enterprise Patterns</h1>
+    <div class="sub">18 patterns · hundreds of variant diagrams · fork of <a href="https://github.com/aman210122/ai-architecture-enterprise-patterns">aman210122/ai-architecture-enterprise-patterns</a></div>
+  </header>
+
+  <div class="search"><input id="q" placeholder="Filter patterns or variants…" autofocus></div>
+
+  <div id="list">
+    <details class="pattern" data-name="01-unified-ai-gateway unified ai gateway">
+      <summary><span class="title">Unified Ai Gateway</span><span class="count">14 variants</span></summary>
+      <div class="desc">**Route all LLM and ML traffic through a single governance-aware control plane.**</div>
+      <div class="variants">
+        <a href="patterns/01-unified-ai-gateway/aws-native/" data-name="aws-native aws native">Aws Native</a>
+        <a href="patterns/01-unified-ai-gateway/azure-native/" data-name="azure-native azure native">Azure Native</a>
+        <a href="patterns/01-unified-ai-gateway/databricks-native/" data-name="databricks-native databricks native">Databricks Native</a>
+        <a href="patterns/01-unified-ai-gateway/edge/" data-name="edge edge">Edge</a>
+        <a href="patterns/01-unified-ai-gateway/federated/" data-name="federated federated">Federated</a>
+        <a href="patterns/01-unified-ai-gateway/gcp-native/" data-name="gcp-native gcp native">Gcp Native</a>
+        <a href="patterns/01-unified-ai-gateway/graceful-degradation/" data-name="graceful-degradation graceful degradation">Graceful Degradation</a>
+        <a href="patterns/01-unified-ai-gateway/hybrid/" data-name="hybrid hybrid">Hybrid</a>
+        <a href="patterns/01-unified-ai-gateway/multi-cloud/" data-name="multi-cloud multi cloud">Multi Cloud</a>
+        <a href="patterns/01-unified-ai-gateway/multi-platform/" data-name="multi-platform multi platform">Multi Platform</a>
+        <a href="patterns/01-unified-ai-gateway/multi-provider-failover/" data-name="multi-provider-failover multi provider failover">Multi Provider Failover</a>
+        <a href="patterns/01-unified-ai-gateway/open-source/" data-name="open-source open source">Open Source</a>
+        <a href="patterns/01-unified-ai-gateway/snowflake-native/" data-name="snowflake-native snowflake native">Snowflake Native</a>
+        <a href="patterns/01-unified-ai-gateway/starter/" data-name="starter starter">Starter</a>
+      </div>
+    </details>
+    <details class="pattern" data-name="02-rag-regulated-data rag regulated data">
+      <summary><span class="title">Rag Regulated Data</span><span class="count">12 variants</span></summary>
+      <div class="desc">Retrieval-augmented generation with compliance controls. 7-stage ingestion, central vector store hub, 8-stage query pipeline. PHI-aware, HIPAA-compliant.</div>
+      <div class="variants">
+        <a href="patterns/02-rag-regulated-data/agentic-rag/" data-name="agentic-rag agentic rag">Agentic Rag</a>
+        <a href="patterns/02-rag-regulated-data/caching-optimized-rag/" data-name="caching-optimized-rag caching optimized rag">Caching Optimized Rag</a>
+        <a href="patterns/02-rag-regulated-data/conversational-rag/" data-name="conversational-rag conversational rag">Conversational Rag</a>
+        <a href="patterns/02-rag-regulated-data/evaluation-rag/" data-name="evaluation-rag evaluation rag">Evaluation Rag</a>
+        <a href="patterns/02-rag-regulated-data/graph-rag/" data-name="graph-rag graph rag">Graph Rag</a>
+        <a href="patterns/02-rag-regulated-data/hybrid-sql-vector-rag/" data-name="hybrid-sql-vector-rag hybrid sql vector rag">Hybrid Sql Vector Rag</a>
+        <a href="patterns/02-rag-regulated-data/multi-source-rag/" data-name="multi-source-rag multi source rag">Multi Source Rag</a>
+        <a href="patterns/02-rag-regulated-data/multimodal-rag/" data-name="multimodal-rag multimodal rag">Multimodal Rag</a>
+        <a href="patterns/02-rag-regulated-data/privacy-preserving-rag/" data-name="privacy-preserving-rag privacy preserving rag">Privacy Preserving Rag</a>
+        <a href="patterns/02-rag-regulated-data/realtime-rag/" data-name="realtime-rag realtime rag">Realtime Rag</a>
+        <a href="patterns/02-rag-regulated-data/sensitive-data-rag/" data-name="sensitive-data-rag sensitive data rag">Sensitive Data Rag</a>
+        <a href="patterns/02-rag-regulated-data/standard-rag/" data-name="standard-rag standard rag">Standard Rag</a>
+      </div>
+    </details>
+    <details class="pattern" data-name="03-multi-agent-safety-gates multi agent safety gates">
+      <summary><span class="title">Multi Agent Safety Gates</span><span class="count">12 variants</span></summary>
+      <div class="desc">Orchestrator + agent chain + hexagonal safety gates. Per-agent model badges, cost tracking, conditional routing, checkpoint/resume.</div>
+      <div class="variants">
+        <a href="patterns/03-multi-agent-safety-gates/adversarial-red-blue/" data-name="adversarial-red-blue adversarial red blue">Adversarial Red Blue</a>
+        <a href="patterns/03-multi-agent-safety-gates/consensus/" data-name="consensus consensus">Consensus</a>
+        <a href="patterns/03-multi-agent-safety-gates/dag-orchestration/" data-name="dag-orchestration dag orchestration">Dag Orchestration</a>
+        <a href="patterns/03-multi-agent-safety-gates/debate/" data-name="debate debate">Debate</a>
+        <a href="patterns/03-multi-agent-safety-gates/hierarchical/" data-name="hierarchical hierarchical">Hierarchical</a>
+        <a href="patterns/03-multi-agent-safety-gates/human-in-the-loop/" data-name="human-in-the-loop human in the loop">Human In The Loop</a>
+        <a href="patterns/03-multi-agent-safety-gates/linear-chain/" data-name="linear-chain linear chain">Linear Chain</a>
+        <a href="patterns/03-multi-agent-safety-gates/memory-governance/" data-name="memory-governance memory governance">Memory Governance</a>
+        <a href="patterns/03-multi-agent-safety-gates/parallel-monitor/" data-name="parallel-monitor parallel monitor">Parallel Monitor</a>
+        <a href="patterns/03-multi-agent-safety-gates/reflection-loop/" data-name="reflection-loop reflection loop">Reflection Loop</a>
+        <a href="patterns/03-multi-agent-safety-gates/state-machine-agent/" data-name="state-machine-agent state machine agent">State Machine Agent</a>
+        <a href="patterns/03-multi-agent-safety-gates/swarm/" data-name="swarm swarm">Swarm</a>
+      </div>
+    </details>
+    <details class="pattern" data-name="04-agentic-tool-governance agentic tool governance">
+      <summary><span class="title">Agentic Tool Governance</span><span class="count">9 variants</span></summary>
+      <div class="desc">Tool registry grid + shield auth gate + 8-stage invocation chain. Per-tool cost, health monitoring, side effect tracking.</div>
+      <div class="variants">
+        <a href="patterns/04-agentic-tool-governance/a2a-protocol/" data-name="a2a-protocol a2a protocol">A2A Protocol</a>
+        <a href="patterns/04-agentic-tool-governance/compound-tools/" data-name="compound-tools compound tools">Compound Tools</a>
+        <a href="patterns/04-agentic-tool-governance/function-calling/" data-name="function-calling function calling">Function Calling</a>
+        <a href="patterns/04-agentic-tool-governance/mcp-protocol/" data-name="mcp-protocol mcp protocol">Mcp Protocol</a>
+        <a href="patterns/04-agentic-tool-governance/multi-tenant-isolation/" data-name="multi-tenant-isolation multi tenant isolation">Multi Tenant Isolation</a>
+        <a href="patterns/04-agentic-tool-governance/sandboxed-execution/" data-name="sandboxed-execution sandboxed execution">Sandboxed Execution</a>
+        <a href="patterns/04-agentic-tool-governance/tool-discovery/" data-name="tool-discovery tool discovery">Tool Discovery</a>
+        <a href="patterns/04-agentic-tool-governance/tool-escalation/" data-name="tool-escalation tool escalation">Tool Escalation</a>
+        <a href="patterns/04-agentic-tool-governance/tool-versioning/" data-name="tool-versioning tool versioning">Tool Versioning</a>
+      </div>
+    </details>
+    <details class="pattern" data-name="05-llmops-pipeline llmops pipeline">
+      <summary><span class="title">Llmops Pipeline</span><span class="count">30 variants</span></summary>
+      <div class="desc">Development column + Model Registry hub + Production column. Prompt versioning, eval gates, canary deploy, drift detection.</div>
+      <div class="variants">
+        <a href="patterns/05-llmops-pipeline/ab-testing/" data-name="ab-testing ab testing">Ab Testing</a>
+        <a href="patterns/05-llmops-pipeline/aws-llmops/" data-name="aws-llmops aws llmops">Aws Llmops</a>
+        <a href="patterns/05-llmops-pipeline/azure-llmops/" data-name="azure-llmops azure llmops">Azure Llmops</a>
+        <a href="patterns/05-llmops-pipeline/blue-green-deployment/" data-name="blue-green-deployment blue green deployment">Blue Green Deployment</a>
+        <a href="patterns/05-llmops-pipeline/canary-deployment/" data-name="canary-deployment canary deployment">Canary Deployment</a>
+        <a href="patterns/05-llmops-pipeline/capacity-planning/" data-name="capacity-planning capacity planning">Capacity Planning</a>
+        <a href="patterns/05-llmops-pipeline/compliance-audit/" data-name="compliance-audit compliance audit">Compliance Audit</a>
+        <a href="patterns/05-llmops-pipeline/compliance-gated/" data-name="compliance-gated compliance gated">Compliance Gated</a>
+        <a href="patterns/05-llmops-pipeline/cost-optimization/" data-name="cost-optimization cost optimization">Cost Optimization</a>
+        <a href="patterns/05-llmops-pipeline/data-pipeline/" data-name="data-pipeline data pipeline">Data Pipeline</a>
+        <a href="patterns/05-llmops-pipeline/databricks-llmops/" data-name="databricks-llmops databricks llmops">Databricks Llmops</a>
+        <a href="patterns/05-llmops-pipeline/drift-detection/" data-name="drift-detection drift detection">Drift Detection</a>
+        <a href="patterns/05-llmops-pipeline/eval-driven-development/" data-name="eval-driven-development eval driven development">Eval Driven Development</a>
+        <a href="patterns/05-llmops-pipeline/evaluation-harness/" data-name="evaluation-harness evaluation harness">Evaluation Harness</a>
+        <a href="patterns/05-llmops-pipeline/feature-flags/" data-name="feature-flags feature flags">Feature Flags</a>
+        <a href="patterns/05-llmops-pipeline/feedback-integration/" data-name="feedback-integration feedback integration">Feedback Integration</a>
+        <a href="patterns/05-llmops-pipeline/gcp-llmops/" data-name="gcp-llmops gcp llmops">Gcp Llmops</a>
+        <a href="patterns/05-llmops-pipeline/hybrid-llmops/" data-name="hybrid-llmops hybrid llmops">Hybrid Llmops</a>
+        <a href="patterns/05-llmops-pipeline/incident-response/" data-name="incident-response incident response">Incident Response</a>
+        <a href="patterns/05-llmops-pipeline/model-ab-testing/" data-name="model-ab-testing model ab testing">Model Ab Testing</a>
+        <a href="patterns/05-llmops-pipeline/model-monitoring/" data-name="model-monitoring model monitoring">Model Monitoring</a>
+        <a href="patterns/05-llmops-pipeline/model-registry/" data-name="model-registry model registry">Model Registry</a>
+        <a href="patterns/05-llmops-pipeline/model-selection/" data-name="model-selection model selection">Model Selection</a>
+        <a href="patterns/05-llmops-pipeline/open-source-llmops/" data-name="open-source-llmops open source llmops">Open Source Llmops</a>
+        <a href="patterns/05-llmops-pipeline/prompt-engineering/" data-name="prompt-engineering prompt engineering">Prompt Engineering</a>
+        <a href="patterns/05-llmops-pipeline/prompt-lifecycle/" data-name="prompt-lifecycle prompt lifecycle">Prompt Lifecycle</a>
+        <a href="patterns/05-llmops-pipeline/prompt-registry/" data-name="prompt-registry prompt registry">Prompt Registry</a>
+        <a href="patterns/05-llmops-pipeline/prompt-versioning/" data-name="prompt-versioning prompt versioning">Prompt Versioning</a>
+        <a href="patterns/05-llmops-pipeline/rollback-strategy/" data-name="rollback-strategy rollback strategy">Rollback Strategy</a>
+        <a href="patterns/05-llmops-pipeline/shadow-deployment/" data-name="shadow-deployment shadow deployment">Shadow Deployment</a>
+      </div>
+    </details>
+    <details class="pattern" data-name="06-governance-as-architecture governance as architecture">
+      <summary><span class="title">Governance As Architecture</span><span class="count">34 variants</span></summary>
+      <div class="desc">Governance wraps AROUND the AI system. Define, Assess, Enforce, Measure, Report. BSC 7-phase lifecycle.</div>
+      <div class="variants">
+        <a href="patterns/06-governance-as-architecture/audit-automation/" data-name="audit-automation audit automation">Audit Automation</a>
+        <a href="patterns/06-governance-as-architecture/audit-trail/" data-name="audit-trail audit trail">Audit Trail</a>
+        <a href="patterns/06-governance-as-architecture/bias-fairness/" data-name="bias-fairness bias fairness">Bias Fairness</a>
+        <a href="patterns/06-governance-as-architecture/bias-monitoring/" data-name="bias-monitoring bias monitoring">Bias Monitoring</a>
+        <a href="patterns/06-governance-as-architecture/bias-testing/" data-name="bias-testing bias testing">Bias Testing</a>
+        <a href="patterns/06-governance-as-architecture/change-management/" data-name="change-management change management">Change Management</a>
+        <a href="patterns/06-governance-as-architecture/consent-data-rights/" data-name="consent-data-rights consent data rights">Consent Data Rights</a>
+        <a href="patterns/06-governance-as-architecture/consent-management/" data-name="consent-management consent management">Consent Management</a>
+        <a href="patterns/06-governance-as-architecture/continuous-assurance/" data-name="continuous-assurance continuous assurance">Continuous Assurance</a>
+        <a href="patterns/06-governance-as-architecture/continuous-compliance/" data-name="continuous-compliance continuous compliance">Continuous Compliance</a>
+        <a href="patterns/06-governance-as-architecture/data-governance/" data-name="data-governance data governance">Data Governance</a>
+        <a href="patterns/06-governance-as-architecture/data-lineage/" data-name="data-lineage data lineage">Data Lineage</a>
+        <a href="patterns/06-governance-as-architecture/decay-detection/" data-name="decay-detection decay detection">Decay Detection</a>
+        <a href="patterns/06-governance-as-architecture/embedded-governance/" data-name="embedded-governance embedded governance">Embedded Governance</a>
+        <a href="patterns/06-governance-as-architecture/explainability/" data-name="explainability explainability">Explainability</a>
+        <a href="patterns/06-governance-as-architecture/governance-dashboard/" data-name="governance-dashboard governance dashboard">Governance Dashboard</a>
+        <a href="patterns/06-governance-as-architecture/governance-federation/" data-name="governance-federation governance federation">Governance Federation</a>
+        <a href="patterns/06-governance-as-architecture/governance-maturity/" data-name="governance-maturity governance maturity">Governance Maturity</a>
+        <a href="patterns/06-governance-as-architecture/governance-testing/" data-name="governance-testing governance testing">Governance Testing</a>
+        <a href="patterns/06-governance-as-architecture/human-oversight/" data-name="human-oversight human oversight">Human Oversight</a>
+        <a href="patterns/06-governance-as-architecture/incident-governance/" data-name="incident-governance incident governance">Incident Governance</a>
+        <a href="patterns/06-governance-as-architecture/incident-response/" data-name="incident-response incident response">Incident Response</a>
+        <a href="patterns/06-governance-as-architecture/maturity-assessment/" data-name="maturity-assessment maturity assessment">Maturity Assessment</a>
+        <a href="patterns/06-governance-as-architecture/model-cards/" data-name="model-cards model cards">Model Cards</a>
+        <a href="patterns/06-governance-as-architecture/policy-as-code/" data-name="policy-as-code policy as code">Policy As Code</a>
+        <a href="patterns/06-governance-as-architecture/regulatory-mapping/" data-name="regulatory-mapping regulatory mapping">Regulatory Mapping</a>
+        <a href="patterns/06-governance-as-architecture/responsible-ai-review/" data-name="responsible-ai-review responsible ai review">Responsible Ai Review</a>
+        <a href="patterns/06-governance-as-architecture/risk-classification/" data-name="risk-classification risk classification">Risk Classification</a>
+        <a href="patterns/06-governance-as-architecture/risk-tiered/" data-name="risk-tiered risk tiered">Risk Tiered</a>
+        <a href="patterns/06-governance-as-architecture/shadow-ai-detection/" data-name="shadow-ai-detection shadow ai detection">Shadow Ai Detection</a>
+        <a href="patterns/06-governance-as-architecture/shift-left-governance/" data-name="shift-left-governance shift left governance">Shift Left Governance</a>
+        <a href="patterns/06-governance-as-architecture/stakeholder-reporting/" data-name="stakeholder-reporting stakeholder reporting">Stakeholder Reporting</a>
+        <a href="patterns/06-governance-as-architecture/vendor-governance/" data-name="vendor-governance vendor governance">Vendor Governance</a>
+        <a href="patterns/06-governance-as-architecture/xai-explainability/" data-name="xai-explainability xai explainability">Xai Explainability</a>
+      </div>
+    </details>
+    <details class="pattern" data-name="07-contamination-resistant-pipeline contamination resistant pipeline">
+      <summary><span class="title">Contamination Resistant Pipeline</span><span class="count">33 variants</span></summary>
+      <div class="desc">**Vertical barrier walls between stages. Quarantine zone catches contaminated outputs. Based on EMG research (74 critical drug interactions across 4,800 trials).**</div>
+      <div class="variants">
+        <a href="patterns/07-contamination-resistant-pipeline/canary-pipeline/" data-name="canary-pipeline canary pipeline">Canary Pipeline</a>
+        <a href="patterns/07-contamination-resistant-pipeline/clean-re-execution/" data-name="clean-re-execution clean re execution">Clean Re Execution</a>
+        <a href="patterns/07-contamination-resistant-pipeline/clinical-safety-gate/" data-name="clinical-safety-gate clinical safety gate">Clinical Safety Gate</a>
+        <a href="patterns/07-contamination-resistant-pipeline/collective-delusion-defense/" data-name="collective-delusion-defense collective delusion defense">Collective Delusion Defense</a>
+        <a href="patterns/07-contamination-resistant-pipeline/collective-delusion-monitor/" data-name="collective-delusion-monitor collective delusion monitor">Collective Delusion Monitor</a>
+        <a href="patterns/07-contamination-resistant-pipeline/consensus-validation/" data-name="consensus-validation consensus validation">Consensus Validation</a>
+        <a href="patterns/07-contamination-resistant-pipeline/contamination-detection/" data-name="contamination-detection contamination detection">Contamination Detection</a>
+        <a href="patterns/07-contamination-resistant-pipeline/contamination-lineage/" data-name="contamination-lineage contamination lineage">Contamination Lineage</a>
+        <a href="patterns/07-contamination-resistant-pipeline/contamination-percolation/" data-name="contamination-percolation contamination percolation">Contamination Percolation</a>
+        <a href="patterns/07-contamination-resistant-pipeline/cross-agent-validation/" data-name="cross-agent-validation cross agent validation">Cross Agent Validation</a>
+        <a href="patterns/07-contamination-resistant-pipeline/cross-pipeline/" data-name="cross-pipeline cross pipeline">Cross Pipeline</a>
+        <a href="patterns/07-contamination-resistant-pipeline/gap-inversion-diagnostic/" data-name="gap-inversion-diagnostic gap inversion diagnostic">Gap Inversion Diagnostic</a>
+        <a href="patterns/07-contamination-resistant-pipeline/graceful-degradation/" data-name="graceful-degradation graceful degradation">Graceful Degradation</a>
+        <a href="patterns/07-contamination-resistant-pipeline/hallucination-firewall/" data-name="hallucination-firewall hallucination firewall">Hallucination Firewall</a>
+        <a href="patterns/07-contamination-resistant-pipeline/immune-system/" data-name="immune-system immune system">Immune System</a>
+        <a href="patterns/07-contamination-resistant-pipeline/input-sanitization/" data-name="input-sanitization input sanitization">Input Sanitization</a>
+        <a href="patterns/07-contamination-resistant-pipeline/isolation-barriers/" data-name="isolation-barriers isolation barriers">Isolation Barriers</a>
+        <a href="patterns/07-contamination-resistant-pipeline/isolation-enforcement/" data-name="isolation-enforcement isolation enforcement">Isolation Enforcement</a>
+        <a href="patterns/07-contamination-resistant-pipeline/model-comparison-safety/" data-name="model-comparison-safety model comparison safety">Model Comparison Safety</a>
+        <a href="patterns/07-contamination-resistant-pipeline/model-diversity/" data-name="model-diversity model diversity">Model Diversity</a>
+        <a href="patterns/07-contamination-resistant-pipeline/output-quarantine/" data-name="output-quarantine output quarantine">Output Quarantine</a>
+        <a href="patterns/07-contamination-resistant-pipeline/output-scrubbing/" data-name="output-scrubbing output scrubbing">Output Scrubbing</a>
+        <a href="patterns/07-contamination-resistant-pipeline/percolation-defense/" data-name="percolation-defense percolation defense">Percolation Defense</a>
+        <a href="patterns/07-contamination-resistant-pipeline/pipeline-level-emr/" data-name="pipeline-level-emr pipeline level emr">Pipeline Level Emr</a>
+        <a href="patterns/07-contamination-resistant-pipeline/provenance-tracking/" data-name="provenance-tracking provenance tracking">Provenance Tracking</a>
+        <a href="patterns/07-contamination-resistant-pipeline/quarantine-architecture/" data-name="quarantine-architecture quarantine architecture">Quarantine Architecture</a>
+        <a href="patterns/07-contamination-resistant-pipeline/quarantine-management/" data-name="quarantine-management quarantine management">Quarantine Management</a>
+        <a href="patterns/07-contamination-resistant-pipeline/redundant-generation/" data-name="redundant-generation redundant generation">Redundant Generation</a>
+        <a href="patterns/07-contamination-resistant-pipeline/rollback-capable/" data-name="rollback-capable rollback capable">Rollback Capable</a>
+        <a href="patterns/07-contamination-resistant-pipeline/rollback-recovery/" data-name="rollback-recovery rollback recovery">Rollback Recovery</a>
+        <a href="patterns/07-contamination-resistant-pipeline/source-grounding/" data-name="source-grounding source grounding">Source Grounding</a>
+        <a href="patterns/07-contamination-resistant-pipeline/standard-defense/" data-name="standard-defense standard defense">Standard Defense</a>
+        <a href="patterns/07-contamination-resistant-pipeline/validation-checkpoints/" data-name="validation-checkpoints validation checkpoints">Validation Checkpoints</a>
+      </div>
+    </details>
+    <details class="pattern" data-name="08-compliance-aware-routing compliance aware routing">
+      <summary><span class="title">Compliance Aware Routing</span><span class="count">24 variants</span></summary>
+      <div class="desc">**Diamond decision tree routing queries to correct endpoints. PHI to BAA, PII redacted, clean to standard. Based on PHI-GUARD research (zero violations, 30K queries).**</div>
+      <div class="variants">
+        <a href="patterns/08-compliance-aware-routing/access-control-data/" data-name="access-control-data access control data">Access Control Data</a>
+        <a href="patterns/08-compliance-aware-routing/audit-trail/" data-name="audit-trail audit trail">Audit Trail</a>
+        <a href="patterns/08-compliance-aware-routing/baa-endpoint-management/" data-name="baa-endpoint-management baa endpoint management">Baa Endpoint Management</a>
+        <a href="patterns/08-compliance-aware-routing/baa-routing/" data-name="baa-routing baa routing">Baa Routing</a>
+        <a href="patterns/08-compliance-aware-routing/cares-algorithm/" data-name="cares-algorithm cares algorithm">Cares Algorithm</a>
+        <a href="patterns/08-compliance-aware-routing/consent-routing/" data-name="consent-routing consent routing">Consent Routing</a>
+        <a href="patterns/08-compliance-aware-routing/data-residency/" data-name="data-residency data residency">Data Residency</a>
+        <a href="patterns/08-compliance-aware-routing/de-identification/" data-name="de-identification de identification">De Identification</a>
+        <a href="patterns/08-compliance-aware-routing/dlp-integration/" data-name="dlp-integration dlp integration">Dlp Integration</a>
+        <a href="patterns/08-compliance-aware-routing/encryption-routing/" data-name="encryption-routing encryption routing">Encryption Routing</a>
+        <a href="patterns/08-compliance-aware-routing/field-redaction/" data-name="field-redaction field redaction">Field Redaction</a>
+        <a href="patterns/08-compliance-aware-routing/gdpr-routing/" data-name="gdpr-routing gdpr routing">Gdpr Routing</a>
+        <a href="patterns/08-compliance-aware-routing/hipaa-compliance/" data-name="hipaa-compliance hipaa compliance">Hipaa Compliance</a>
+        <a href="patterns/08-compliance-aware-routing/multi-jurisdiction/" data-name="multi-jurisdiction multi jurisdiction">Multi Jurisdiction</a>
+        <a href="patterns/08-compliance-aware-routing/phi-detection-engine/" data-name="phi-detection-engine phi detection engine">Phi Detection Engine</a>
+        <a href="patterns/08-compliance-aware-routing/phi-routing/" data-name="phi-routing phi routing">Phi Routing</a>
+        <a href="patterns/08-compliance-aware-routing/pii-redaction/" data-name="pii-redaction pii redaction">Pii Redaction</a>
+        <a href="patterns/08-compliance-aware-routing/regional-compliance/" data-name="regional-compliance regional compliance">Regional Compliance</a>
+        <a href="patterns/08-compliance-aware-routing/regulatory-evidence/" data-name="regulatory-evidence regulatory evidence">Regulatory Evidence</a>
+        <a href="patterns/08-compliance-aware-routing/retention-policy/" data-name="retention-policy retention policy">Retention Policy</a>
+        <a href="patterns/08-compliance-aware-routing/routing-audit/" data-name="routing-audit routing audit">Routing Audit</a>
+        <a href="patterns/08-compliance-aware-routing/sensitivity-classification/" data-name="sensitivity-classification sensitivity classification">Sensitivity Classification</a>
+        <a href="patterns/08-compliance-aware-routing/state-privacy-laws/" data-name="state-privacy-laws state privacy laws">State Privacy Laws</a>
+        <a href="patterns/08-compliance-aware-routing/tokenization/" data-name="tokenization tokenization">Tokenization</a>
+      </div>
+    </details>
+    <details class="pattern" data-name="08-compliance-data-routing compliance data routing">
+      <summary><span class="title">Compliance Data Routing</span><span class="count">14 variants</span></summary>
+      <div class="desc">**Data sensitivity drives model and provider selection. 14 variants covering every cloud, jurisdiction, regulation, and routing architecture.**</div>
+      <div class="variants">
+        <a href="patterns/08-compliance-data-routing/anonymization-routing/" data-name="anonymization-routing anonymization routing">Anonymization Routing</a>
+        <a href="patterns/08-compliance-data-routing/aws-compliance/" data-name="aws-compliance aws compliance">Aws Compliance</a>
+        <a href="patterns/08-compliance-data-routing/azure-compliance/" data-name="azure-compliance azure compliance">Azure Compliance</a>
+        <a href="patterns/08-compliance-data-routing/consent-based-routing/" data-name="consent-based-routing consent based routing">Consent Based Routing</a>
+        <a href="patterns/08-compliance-data-routing/cross-border-routing/" data-name="cross-border-routing cross border routing">Cross Border Routing</a>
+        <a href="patterns/08-compliance-data-routing/data-lineage-routing/" data-name="data-lineage-routing data lineage routing">Data Lineage Routing</a>
+        <a href="patterns/08-compliance-data-routing/data-residency-routing/" data-name="data-residency-routing data residency routing">Data Residency Routing</a>
+        <a href="patterns/08-compliance-data-routing/dynamic-reclassification/" data-name="dynamic-reclassification dynamic reclassification">Dynamic Reclassification</a>
+        <a href="patterns/08-compliance-data-routing/gcp-compliance/" data-name="gcp-compliance gcp compliance">Gcp Compliance</a>
+        <a href="patterns/08-compliance-data-routing/multi-cloud-compliance/" data-name="multi-cloud-compliance multi cloud compliance">Multi Cloud Compliance</a>
+        <a href="patterns/08-compliance-data-routing/multi-regulation/" data-name="multi-regulation multi regulation">Multi Regulation</a>
+        <a href="patterns/08-compliance-data-routing/on-prem-compliance/" data-name="on-prem-compliance on prem compliance">On Prem Compliance</a>
+        <a href="patterns/08-compliance-data-routing/sensitivity-classification/" data-name="sensitivity-classification sensitivity classification">Sensitivity Classification</a>
+        <a href="patterns/08-compliance-data-routing/temporal-compliance/" data-name="temporal-compliance temporal compliance">Temporal Compliance</a>
+      </div>
+    </details>
+    <details class="pattern" data-name="09-ai-evaluation-red-teaming ai evaluation red teaming">
+      <summary><span class="title">Ai Evaluation Red Teaming</span><span class="count">29 variants</span></summary>
+      <div class="desc">**Test inputs feed the Eval Engine. 2x3 score card grid shows quality across 6 dimensions. 15 variants covering every evaluation approach.**</div>
+      <div class="variants">
+        <a href="patterns/09-ai-evaluation-red-teaming/ab-comparison/" data-name="ab-comparison ab comparison">Ab Comparison</a>
+        <a href="patterns/09-ai-evaluation-red-teaming/adversarial-red-team/" data-name="adversarial-red-team adversarial red team">Adversarial Red Team</a>
+        <a href="patterns/09-ai-evaluation-red-teaming/adversarial-testing/" data-name="adversarial-testing adversarial testing">Adversarial Testing</a>
+        <a href="patterns/09-ai-evaluation-red-teaming/bias-fairness/" data-name="bias-fairness bias fairness">Bias Fairness</a>
+        <a href="patterns/09-ai-evaluation-red-teaming/bias-fairness-testing/" data-name="bias-fairness-testing bias fairness testing">Bias Fairness Testing</a>
+        <a href="patterns/09-ai-evaluation-red-teaming/clinical-eval/" data-name="clinical-eval clinical eval">Clinical Eval</a>
+        <a href="patterns/09-ai-evaluation-red-teaming/compliance-testing/" data-name="compliance-testing compliance testing">Compliance Testing</a>
+        <a href="patterns/09-ai-evaluation-red-teaming/continuous-eval/" data-name="continuous-eval continuous eval">Continuous Eval</a>
+        <a href="patterns/09-ai-evaluation-red-teaming/domain-expert-review/" data-name="domain-expert-review domain expert review">Domain Expert Review</a>
+        <a href="patterns/09-ai-evaluation-red-teaming/eval-framework/" data-name="eval-framework eval framework">Eval Framework</a>
+        <a href="patterns/09-ai-evaluation-red-teaming/eval-in-ci/" data-name="eval-in-ci eval in ci">Eval In Ci</a>
+        <a href="patterns/09-ai-evaluation-red-teaming/evaluation-framework/" data-name="evaluation-framework evaluation framework">Evaluation Framework</a>
+        <a href="patterns/09-ai-evaluation-red-teaming/golden-dataset/" data-name="golden-dataset golden dataset">Golden Dataset</a>
+        <a href="patterns/09-ai-evaluation-red-teaming/golden-dataset-management/" data-name="golden-dataset-management golden dataset management">Golden Dataset Management</a>
+        <a href="patterns/09-ai-evaluation-red-teaming/groundedness-eval/" data-name="groundedness-eval groundedness eval">Groundedness Eval</a>
+        <a href="patterns/09-ai-evaluation-red-teaming/hallucination-detection/" data-name="hallucination-detection hallucination detection">Hallucination Detection</a>
+        <a href="patterns/09-ai-evaluation-red-teaming/human-eval/" data-name="human-eval human eval">Human Eval</a>
+        <a href="patterns/09-ai-evaluation-red-teaming/human-evaluation/" data-name="human-evaluation human evaluation">Human Evaluation</a>
+        <a href="patterns/09-ai-evaluation-red-teaming/latency-benchmarking/" data-name="latency-benchmarking latency benchmarking">Latency Benchmarking</a>
+        <a href="patterns/09-ai-evaluation-red-teaming/llm-as-judge/" data-name="llm-as-judge llm as judge">Llm As Judge</a>
+        <a href="patterns/09-ai-evaluation-red-teaming/model-benchmarking/" data-name="model-benchmarking model benchmarking">Model Benchmarking</a>
+        <a href="patterns/09-ai-evaluation-red-teaming/model-comparison/" data-name="model-comparison model comparison">Model Comparison</a>
+        <a href="patterns/09-ai-evaluation-red-teaming/prompt-injection-testing/" data-name="prompt-injection-testing prompt injection testing">Prompt Injection Testing</a>
+        <a href="patterns/09-ai-evaluation-red-teaming/ragas-integration/" data-name="ragas-integration ragas integration">Ragas Integration</a>
+        <a href="patterns/09-ai-evaluation-red-teaming/red-team-ops/" data-name="red-team-ops red team ops">Red Team Ops</a>
+        <a href="patterns/09-ai-evaluation-red-teaming/regression-testing/" data-name="regression-testing regression testing">Regression Testing</a>
+        <a href="patterns/09-ai-evaluation-red-teaming/robustness-testing/" data-name="robustness-testing robustness testing">Robustness Testing</a>
+        <a href="patterns/09-ai-evaluation-red-teaming/safety-benchmarks/" data-name="safety-benchmarks safety benchmarks">Safety Benchmarks</a>
+        <a href="patterns/09-ai-evaluation-red-teaming/safety-testing/" data-name="safety-testing safety testing">Safety Testing</a>
+      </div>
+    </details>
+    <details class="pattern" data-name="09-evaluation-red-teaming evaluation red teaming">
+      <summary><span class="title">Evaluation Red Teaming</span><span class="count">15 variants</span></summary>
+      <div class="desc">**Systematic AI quality and safety evaluation. 10 variants from automated adversarial testing to domain-specific clinical evaluation.**</div>
+      <div class="variants">
+        <a href="patterns/09-evaluation-red-teaming/adversarial-robustness/" data-name="adversarial-robustness adversarial robustness">Adversarial Robustness</a>
+        <a href="patterns/09-evaluation-red-teaming/automated-red-teaming/" data-name="automated-red-teaming automated red teaming">Automated Red Teaming</a>
+        <a href="patterns/09-evaluation-red-teaming/bias-evaluation/" data-name="bias-evaluation bias evaluation">Bias Evaluation</a>
+        <a href="patterns/09-evaluation-red-teaming/compliance-evaluation/" data-name="compliance-evaluation compliance evaluation">Compliance Evaluation</a>
+        <a href="patterns/09-evaluation-red-teaming/continuous-eval/" data-name="continuous-eval continuous eval">Continuous Eval</a>
+        <a href="patterns/09-evaluation-red-teaming/domain-specific-eval/" data-name="domain-specific-eval domain specific eval">Domain Specific Eval</a>
+        <a href="patterns/09-evaluation-red-teaming/hallucination-benchmarking/" data-name="hallucination-benchmarking hallucination benchmarking">Hallucination Benchmarking</a>
+        <a href="patterns/09-evaluation-red-teaming/human-eval/" data-name="human-eval human eval">Human Eval</a>
+        <a href="patterns/09-evaluation-red-teaming/llm-as-judge/" data-name="llm-as-judge llm as judge">Llm As Judge</a>
+        <a href="patterns/09-evaluation-red-teaming/multi-model-comparison/" data-name="multi-model-comparison multi model comparison">Multi Model Comparison</a>
+        <a href="patterns/09-evaluation-red-teaming/prompt-leakage/" data-name="prompt-leakage prompt leakage">Prompt Leakage</a>
+        <a href="patterns/09-evaluation-red-teaming/ragas-evaluation/" data-name="ragas-evaluation ragas evaluation">Ragas Evaluation</a>
+        <a href="patterns/09-evaluation-red-teaming/regression-testing/" data-name="regression-testing regression testing">Regression Testing</a>
+        <a href="patterns/09-evaluation-red-teaming/safety-benchmarking/" data-name="safety-benchmarking safety benchmarking">Safety Benchmarking</a>
+        <a href="patterns/09-evaluation-red-teaming/synthetic-test-generation/" data-name="synthetic-test-generation synthetic test generation">Synthetic Test Generation</a>
+      </div>
+    </details>
+    <details class="pattern" data-name="10-finops-for-ai finops for ai">
+      <summary><span class="title">Finops For Ai</span><span class="count">39 variants</span></summary>
+      <div class="desc">**Big total spend number, cost waterfall breakdown, team allocation table, budget vs actual, optimization levers. 14 variants covering every cost dimension.**</div>
+      <div class="variants">
+        <a href="patterns/10-finops-for-ai/aws-finops/" data-name="aws-finops aws finops">Aws Finops</a>
+        <a href="patterns/10-finops-for-ai/azure-finops/" data-name="azure-finops azure finops">Azure Finops</a>
+        <a href="patterns/10-finops-for-ai/batch-optimization/" data-name="batch-optimization batch optimization">Batch Optimization</a>
+        <a href="patterns/10-finops-for-ai/batch-vs-realtime/" data-name="batch-vs-realtime batch vs realtime">Batch Vs Realtime</a>
+        <a href="patterns/10-finops-for-ai/budget-governance/" data-name="budget-governance budget governance">Budget Governance</a>
+        <a href="patterns/10-finops-for-ai/budget-management/" data-name="budget-management budget management">Budget Management</a>
+        <a href="patterns/10-finops-for-ai/cache-economics/" data-name="cache-economics cache economics">Cache Economics</a>
+        <a href="patterns/10-finops-for-ai/cache-roi/" data-name="cache-roi cache roi">Cache Roi</a>
+        <a href="patterns/10-finops-for-ai/capacity-forecasting/" data-name="capacity-forecasting capacity forecasting">Capacity Forecasting</a>
+        <a href="patterns/10-finops-for-ai/capacity-planning/" data-name="capacity-planning capacity planning">Capacity Planning</a>
+        <a href="patterns/10-finops-for-ai/chargeback/" data-name="chargeback chargeback">Chargeback</a>
+        <a href="patterns/10-finops-for-ai/chargeback-allocation/" data-name="chargeback-allocation chargeback allocation">Chargeback Allocation</a>
+        <a href="patterns/10-finops-for-ai/cost-anomaly/" data-name="cost-anomaly cost anomaly">Cost Anomaly</a>
+        <a href="patterns/10-finops-for-ai/cost-anomaly-detection/" data-name="cost-anomaly-detection cost anomaly detection">Cost Anomaly Detection</a>
+        <a href="patterns/10-finops-for-ai/cost-forecasting/" data-name="cost-forecasting cost forecasting">Cost Forecasting</a>
+        <a href="patterns/10-finops-for-ai/cost-per-quality/" data-name="cost-per-quality cost per quality">Cost Per Quality</a>
+        <a href="patterns/10-finops-for-ai/embedding-cost-optimization/" data-name="embedding-cost-optimization embedding cost optimization">Embedding Cost Optimization</a>
+        <a href="patterns/10-finops-for-ai/gcp-finops/" data-name="gcp-finops gcp finops">Gcp Finops</a>
+        <a href="patterns/10-finops-for-ai/inference-benchmarking/" data-name="inference-benchmarking inference benchmarking">Inference Benchmarking</a>
+        <a href="patterns/10-finops-for-ai/inference-optimization/" data-name="inference-optimization inference optimization">Inference Optimization</a>
+        <a href="patterns/10-finops-for-ai/invoice-reconciliation/" data-name="invoice-reconciliation invoice reconciliation">Invoice Reconciliation</a>
+        <a href="patterns/10-finops-for-ai/model-cost-comparison/" data-name="model-cost-comparison model cost comparison">Model Cost Comparison</a>
+        <a href="patterns/10-finops-for-ai/model-cost-optimization/" data-name="model-cost-optimization model cost optimization">Model Cost Optimization</a>
+        <a href="patterns/10-finops-for-ai/model-routing-optimization/" data-name="model-routing-optimization model routing optimization">Model Routing Optimization</a>
+        <a href="patterns/10-finops-for-ai/multi-cloud-finops/" data-name="multi-cloud-finops multi cloud finops">Multi Cloud Finops</a>
+        <a href="patterns/10-finops-for-ai/multi-model-arbitrage/" data-name="multi-model-arbitrage multi model arbitrage">Multi Model Arbitrage</a>
+        <a href="patterns/10-finops-for-ai/rate-limit-management/" data-name="rate-limit-management rate limit management">Rate Limit Management</a>
+        <a href="patterns/10-finops-for-ai/reserved-capacity/" data-name="reserved-capacity reserved capacity">Reserved Capacity</a>
+        <a href="patterns/10-finops-for-ai/roi-measurement/" data-name="roi-measurement roi measurement">Roi Measurement</a>
+        <a href="patterns/10-finops-for-ai/showback-dashboard/" data-name="showback-dashboard showback dashboard">Showback Dashboard</a>
+        <a href="patterns/10-finops-for-ai/showback-reporting/" data-name="showback-reporting showback reporting">Showback Reporting</a>
+        <a href="patterns/10-finops-for-ai/smart-routing-savings/" data-name="smart-routing-savings smart routing savings">Smart Routing Savings</a>
+        <a href="patterns/10-finops-for-ai/spend-governance/" data-name="spend-governance spend governance">Spend Governance</a>
+        <a href="patterns/10-finops-for-ai/spot-reserved-pricing/" data-name="spot-reserved-pricing spot reserved pricing">Spot Reserved Pricing</a>
+        <a href="patterns/10-finops-for-ai/team-chargeback/" data-name="team-chargeback team chargeback">Team Chargeback</a>
+        <a href="patterns/10-finops-for-ai/token-cost-tracking/" data-name="token-cost-tracking token cost tracking">Token Cost Tracking</a>
+        <a href="patterns/10-finops-for-ai/token-level-finops/" data-name="token-level-finops token level finops">Token Level Finops</a>
+        <a href="patterns/10-finops-for-ai/token-metering/" data-name="token-metering token metering">Token Metering</a>
+        <a href="patterns/10-finops-for-ai/waste-detection/" data-name="waste-detection waste detection">Waste Detection</a>
+      </div>
+    </details>
+    <details class="pattern" data-name="11-ai-security-architecture ai security architecture">
+      <summary><span class="title">Ai Security Architecture</span><span class="count">12 variants</span></summary>
+      <div class="desc">**Defense-in-depth: 5 layers from perimeter to supply chain. 12 variants. OWASP LLM Top 10 mapped to defense layers.**</div>
+      <div class="variants">
+        <a href="patterns/11-ai-security-architecture/adversarial-input-defense/" data-name="adversarial-input-defense adversarial input defense">Adversarial Input Defense</a>
+        <a href="patterns/11-ai-security-architecture/ai-endpoint-security/" data-name="ai-endpoint-security ai endpoint security">Ai Endpoint Security</a>
+        <a href="patterns/11-ai-security-architecture/ai-iam-architecture/" data-name="ai-iam-architecture ai iam architecture">Ai Iam Architecture</a>
+        <a href="patterns/11-ai-security-architecture/ai-incident-response/" data-name="ai-incident-response ai incident response">Ai Incident Response</a>
+        <a href="patterns/11-ai-security-architecture/data-poisoning-detection/" data-name="data-poisoning-detection data poisoning detection">Data Poisoning Detection</a>
+        <a href="patterns/11-ai-security-architecture/jailbreak-defense/" data-name="jailbreak-defense jailbreak defense">Jailbreak Defense</a>
+        <a href="patterns/11-ai-security-architecture/model-theft-prevention/" data-name="model-theft-prevention model theft prevention">Model Theft Prevention</a>
+        <a href="patterns/11-ai-security-architecture/output-safety-filtering/" data-name="output-safety-filtering output safety filtering">Output Safety Filtering</a>
+        <a href="patterns/11-ai-security-architecture/prompt-injection-defense/" data-name="prompt-injection-defense prompt injection defense">Prompt Injection Defense</a>
+        <a href="patterns/11-ai-security-architecture/supply-chain-security/" data-name="supply-chain-security supply chain security">Supply Chain Security</a>
+        <a href="patterns/11-ai-security-architecture/system-prompt-protection/" data-name="system-prompt-protection system prompt protection">System Prompt Protection</a>
+        <a href="patterns/11-ai-security-architecture/watermarking-provenance/" data-name="watermarking-provenance watermarking provenance">Watermarking Provenance</a>
+      </div>
+    </details>
+    <details class="pattern" data-name="12-enterprise-ai-platform enterprise ai platform">
+      <summary><span class="title">Enterprise Ai Platform</span><span class="count">15 variants</span></summary>
+      <div class="desc">**Infrastructure stack building upward. 15 variants. Data -&gt; Compute -&gt; Platform -&gt; API. Multi-cloud mapping table. BSC Pillar 4 reference architecture.**</div>
+      <div class="variants">
+        <a href="patterns/12-enterprise-ai-platform/active-metadata/" data-name="active-metadata active metadata">Active Metadata</a>
+        <a href="patterns/12-enterprise-ai-platform/ci-cd-for-ai/" data-name="ci-cd-for-ai ci cd for ai">Ci Cd For Ai</a>
+        <a href="patterns/12-enterprise-ai-platform/compute-orchestration/" data-name="compute-orchestration compute orchestration">Compute Orchestration</a>
+        <a href="patterns/12-enterprise-ai-platform/data-mesh-for-ai/" data-name="data-mesh-for-ai data mesh for ai">Data Mesh For Ai</a>
+        <a href="patterns/12-enterprise-ai-platform/experiment-tracking/" data-name="experiment-tracking experiment tracking">Experiment Tracking</a>
+        <a href="patterns/12-enterprise-ai-platform/feature-store/" data-name="feature-store feature store">Feature Store</a>
+        <a href="patterns/12-enterprise-ai-platform/gpu-cluster-management/" data-name="gpu-cluster-management gpu cluster management">Gpu Cluster Management</a>
+        <a href="patterns/12-enterprise-ai-platform/inference-serving/" data-name="inference-serving inference serving">Inference Serving</a>
+        <a href="patterns/12-enterprise-ai-platform/knowledge-graph-context/" data-name="knowledge-graph-context knowledge graph context">Knowledge Graph Context</a>
+        <a href="patterns/12-enterprise-ai-platform/lakehouse-architecture/" data-name="lakehouse-architecture lakehouse architecture">Lakehouse Architecture</a>
+        <a href="patterns/12-enterprise-ai-platform/ml-pipeline-orchestration/" data-name="ml-pipeline-orchestration ml pipeline orchestration">Ml Pipeline Orchestration</a>
+        <a href="patterns/12-enterprise-ai-platform/networking-architecture/" data-name="networking-architecture networking architecture">Networking Architecture</a>
+        <a href="patterns/12-enterprise-ai-platform/platform-monitoring/" data-name="platform-monitoring platform monitoring">Platform Monitoring</a>
+        <a href="patterns/12-enterprise-ai-platform/semantic-layer/" data-name="semantic-layer semantic layer">Semantic Layer</a>
+        <a href="patterns/12-enterprise-ai-platform/workspace-management/" data-name="workspace-management workspace management">Workspace Management</a>
+      </div>
+    </details>
+    <details class="pattern" data-name="13-observability-for-ai observability for ai">
+      <summary><span class="title">Observability For Ai</span><span class="count">14 variants</span></summary>
+      <div class="desc">**Dashboard layout with 4 metric panels (quality, latency, cost, drift), live alert feed, model comparison table, integration bar. 14 variants.**</div>
+      <div class="variants">
+        <a href="patterns/13-observability-for-ai/agent-pipeline-tracing/" data-name="agent-pipeline-tracing agent pipeline tracing">Agent Pipeline Tracing</a>
+        <a href="patterns/13-observability-for-ai/ai-dashboards/" data-name="ai-dashboards ai dashboards">Ai Dashboards</a>
+        <a href="patterns/13-observability-for-ai/alerting-rules/" data-name="alerting-rules alerting rules">Alerting Rules</a>
+        <a href="patterns/13-observability-for-ai/chaos-engineering-ai/" data-name="chaos-engineering-ai chaos engineering ai">Chaos Engineering Ai</a>
+        <a href="patterns/13-observability-for-ai/cost-observability/" data-name="cost-observability cost observability">Cost Observability</a>
+        <a href="patterns/13-observability-for-ai/drift-detection/" data-name="drift-detection drift detection">Drift Detection</a>
+        <a href="patterns/13-observability-for-ai/failure-mode-analysis/" data-name="failure-mode-analysis failure mode analysis">Failure Mode Analysis</a>
+        <a href="patterns/13-observability-for-ai/feedback-analytics/" data-name="feedback-analytics feedback analytics">Feedback Analytics</a>
+        <a href="patterns/13-observability-for-ai/llm-call-tracing/" data-name="llm-call-tracing llm call tracing">Llm Call Tracing</a>
+        <a href="patterns/13-observability-for-ai/opentelemetry-integration/" data-name="opentelemetry-integration opentelemetry integration">Opentelemetry Integration</a>
+        <a href="patterns/13-observability-for-ai/quality-metrics/" data-name="quality-metrics quality metrics">Quality Metrics</a>
+        <a href="patterns/13-observability-for-ai/rag-pipeline-tracing/" data-name="rag-pipeline-tracing rag pipeline tracing">Rag Pipeline Tracing</a>
+        <a href="patterns/13-observability-for-ai/retrieval-metrics/" data-name="retrieval-metrics retrieval metrics">Retrieval Metrics</a>
+        <a href="patterns/13-observability-for-ai/siem-apm-integration/" data-name="siem-apm-integration siem apm integration">Siem Apm Integration</a>
+      </div>
+    </details>
+    <details class="pattern" data-name="14-ai-product-architecture ai product architecture">
+      <summary><span class="title">Ai Product Architecture</span><span class="count">12 variants</span></summary>
+      <div class="desc">**Composition diagram showing how patterns P02-P13 combine into real products. 12 product types.**</div>
+      <div class="variants">
+        <a href="patterns/14-ai-product-architecture/claims-processing/" data-name="claims-processing claims processing">Claims Processing</a>
+        <a href="patterns/14-ai-product-architecture/clinical-decision-support/" data-name="clinical-decision-support clinical decision support">Clinical Decision Support</a>
+        <a href="patterns/14-ai-product-architecture/code-assistant/" data-name="code-assistant code assistant">Code Assistant</a>
+        <a href="patterns/14-ai-product-architecture/contact-center-ai/" data-name="contact-center-ai contact center ai">Contact Center Ai</a>
+        <a href="patterns/14-ai-product-architecture/conversational-ai/" data-name="conversational-ai conversational ai">Conversational Ai</a>
+        <a href="patterns/14-ai-product-architecture/copilot-architecture/" data-name="copilot-architecture copilot architecture">Copilot Architecture</a>
+        <a href="patterns/14-ai-product-architecture/document-intelligence/" data-name="document-intelligence document intelligence">Document Intelligence</a>
+        <a href="patterns/14-ai-product-architecture/enterprise-search/" data-name="enterprise-search enterprise search">Enterprise Search</a>
+        <a href="patterns/14-ai-product-architecture/knowledge-management/" data-name="knowledge-management knowledge management">Knowledge Management</a>
+        <a href="patterns/14-ai-product-architecture/recommendation-engine/" data-name="recommendation-engine recommendation engine">Recommendation Engine</a>
+        <a href="patterns/14-ai-product-architecture/report-generation/" data-name="report-generation report generation">Report Generation</a>
+        <a href="patterns/14-ai-product-architecture/workflow-automation/" data-name="workflow-automation workflow automation">Workflow Automation</a>
+      </div>
+    </details>
+    <details class="pattern" data-name="15-migration-interoperability migration interoperability">
+      <summary><span class="title">Migration Interoperability</span><span class="count">12 variants</span></summary>
+      <div class="desc">**Timeline view with migration phases. Assess, abstract, migrate, validate. 12 variants.**</div>
+      <div class="variants">
+        <a href="patterns/15-migration-interoperability/api-compatibility/" data-name="api-compatibility api compatibility">Api Compatibility</a>
+        <a href="patterns/15-migration-interoperability/cloud-migration/" data-name="cloud-migration cloud migration">Cloud Migration</a>
+        <a href="patterns/15-migration-interoperability/cross-platform-governance/" data-name="cross-platform-governance cross platform governance">Cross Platform Governance</a>
+        <a href="patterns/15-migration-interoperability/data-migration/" data-name="data-migration data migration">Data Migration</a>
+        <a href="patterns/15-migration-interoperability/dual-run-strategy/" data-name="dual-run-strategy dual run strategy">Dual Run Strategy</a>
+        <a href="patterns/15-migration-interoperability/model-abstraction-layer/" data-name="model-abstraction-layer model abstraction layer">Model Abstraction Layer</a>
+        <a href="patterns/15-migration-interoperability/model-portability/" data-name="model-portability model portability">Model Portability</a>
+        <a href="patterns/15-migration-interoperability/multi-framework/" data-name="multi-framework multi framework">Multi Framework</a>
+        <a href="patterns/15-migration-interoperability/prompt-portability/" data-name="prompt-portability prompt portability">Prompt Portability</a>
+        <a href="patterns/15-migration-interoperability/sunset-planning/" data-name="sunset-planning sunset planning">Sunset Planning</a>
+        <a href="patterns/15-migration-interoperability/vector-index-migration/" data-name="vector-index-migration vector index migration">Vector Index Migration</a>
+        <a href="patterns/15-migration-interoperability/vendor-lock-in-assessment/" data-name="vendor-lock-in-assessment vendor lock in assessment">Vendor Lock In Assessment</a>
+      </div>
+    </details>
+    <details class="pattern" data-name="16-agent-memory-architecture agent memory architecture">
+      <summary><span class="title">Agent Memory Architecture</span><span class="count">12 variants</span></summary>
+      <div class="desc">**Memory hierarchy panels: episodic, semantic, procedural, governance. Memory operations feed. 12 variants.**</div>
+      <div class="variants">
+        <a href="patterns/16-agent-memory-architecture/context-compression/" data-name="context-compression context compression">Context Compression</a>
+        <a href="patterns/16-agent-memory-architecture/cross-agent-memory/" data-name="cross-agent-memory cross agent memory">Cross Agent Memory</a>
+        <a href="patterns/16-agent-memory-architecture/episodic-memory/" data-name="episodic-memory episodic memory">Episodic Memory</a>
+        <a href="patterns/16-agent-memory-architecture/memory-aware-retrieval/" data-name="memory-aware-retrieval memory aware retrieval">Memory Aware Retrieval</a>
+        <a href="patterns/16-agent-memory-architecture/memory-consolidation/" data-name="memory-consolidation memory consolidation">Memory Consolidation</a>
+        <a href="patterns/16-agent-memory-architecture/memory-governance-gdpr/" data-name="memory-governance-gdpr memory governance gdpr">Memory Governance Gdpr</a>
+        <a href="patterns/16-agent-memory-architecture/memory-lifecycle/" data-name="memory-lifecycle memory lifecycle">Memory Lifecycle</a>
+        <a href="patterns/16-agent-memory-architecture/memory-sharing-protocols/" data-name="memory-sharing-protocols memory sharing protocols">Memory Sharing Protocols</a>
+        <a href="patterns/16-agent-memory-architecture/procedural-memory/" data-name="procedural-memory procedural memory">Procedural Memory</a>
+        <a href="patterns/16-agent-memory-architecture/semantic-memory/" data-name="semantic-memory semantic memory">Semantic Memory</a>
+        <a href="patterns/16-agent-memory-architecture/session-to-longterm/" data-name="session-to-longterm session to longterm">Session To Longterm</a>
+        <a href="patterns/16-agent-memory-architecture/vector-backed-persistence/" data-name="vector-backed-persistence vector backed persistence">Vector Backed Persistence</a>
+      </div>
+    </details>
+    <details class="pattern" data-name="17-data-sovereignty-local-first data sovereignty local first">
+      <summary><span class="title">Data Sovereignty Local First</span><span class="count">12 variants</span></summary>
+      <div class="desc">**Geographic routing panels: on-premises, sovereign cloud, edge, geo-fence. Sovereignty routing map. 12 variants.**</div>
+      <div class="variants">
+        <a href="patterns/17-data-sovereignty-local-first/air-gapped-deployment/" data-name="air-gapped-deployment air gapped deployment">Air Gapped Deployment</a>
+        <a href="patterns/17-data-sovereignty-local-first/confidential-computing/" data-name="confidential-computing confidential computing">Confidential Computing</a>
+        <a href="patterns/17-data-sovereignty-local-first/cross-border-controls/" data-name="cross-border-controls cross border controls">Cross Border Controls</a>
+        <a href="patterns/17-data-sovereignty-local-first/data-gravity/" data-name="data-gravity data gravity">Data Gravity</a>
+        <a href="patterns/17-data-sovereignty-local-first/edge-ai-inference/" data-name="edge-ai-inference edge ai inference">Edge Ai Inference</a>
+        <a href="patterns/17-data-sovereignty-local-first/geo-fenced-compute/" data-name="geo-fenced-compute geo fenced compute">Geo Fenced Compute</a>
+        <a href="patterns/17-data-sovereignty-local-first/hybrid-inference/" data-name="hybrid-inference hybrid inference">Hybrid Inference</a>
+        <a href="patterns/17-data-sovereignty-local-first/local-fine-tuning/" data-name="local-fine-tuning local fine tuning">Local Fine Tuning</a>
+        <a href="patterns/17-data-sovereignty-local-first/on-premises-serving/" data-name="on-premises-serving on premises serving">On Premises Serving</a>
+        <a href="patterns/17-data-sovereignty-local-first/private-model-hosting/" data-name="private-model-hosting private model hosting">Private Model Hosting</a>
+        <a href="patterns/17-data-sovereignty-local-first/regulated-industry-deployment/" data-name="regulated-industry-deployment regulated industry deployment">Regulated Industry Deployment</a>
+        <a href="patterns/17-data-sovereignty-local-first/sovereign-cloud/" data-name="sovereign-cloud sovereign cloud">Sovereign Cloud</a>
+      </div>
+    </details>
+    <details class="pattern" data-name="18-ai-resilience-engineering ai resilience engineering">
+      <summary><span class="title">Ai Resilience Engineering</span><span class="count">12 variants</span></summary>
+      <div class="desc">**Circuit breaker state panels: closed, half-open, open, fallback. Resilience event stream. 12 variants.**</div>
+      <div class="variants">
+        <a href="patterns/18-ai-resilience-engineering/agent-deadlock-resolution/" data-name="agent-deadlock-resolution agent deadlock resolution">Agent Deadlock Resolution</a>
+        <a href="patterns/18-ai-resilience-engineering/chaos-testing-ai/" data-name="chaos-testing-ai chaos testing ai">Chaos Testing Ai</a>
+        <a href="patterns/18-ai-resilience-engineering/circuit-breaker-llm/" data-name="circuit-breaker-llm circuit breaker llm">Circuit Breaker Llm</a>
+        <a href="patterns/18-ai-resilience-engineering/context-window-overflow/" data-name="context-window-overflow context window overflow">Context Window Overflow</a>
+        <a href="patterns/18-ai-resilience-engineering/conversation-recovery/" data-name="conversation-recovery conversation recovery">Conversation Recovery</a>
+        <a href="patterns/18-ai-resilience-engineering/graceful-degradation-hierarchy/" data-name="graceful-degradation-hierarchy graceful degradation hierarchy">Graceful Degradation Hierarchy</a>
+        <a href="patterns/18-ai-resilience-engineering/multi-provider-failover-chain/" data-name="multi-provider-failover-chain multi provider failover chain">Multi Provider Failover Chain</a>
+        <a href="patterns/18-ai-resilience-engineering/rate-limit-resilience/" data-name="rate-limit-resilience rate limit resilience">Rate Limit Resilience</a>
+        <a href="patterns/18-ai-resilience-engineering/recovery-time-objectives/" data-name="recovery-time-objectives recovery time objectives">Recovery Time Objectives</a>
+        <a href="patterns/18-ai-resilience-engineering/semantic-retry/" data-name="semantic-retry semantic retry">Semantic Retry</a>
+        <a href="patterns/18-ai-resilience-engineering/stale-context-detection/" data-name="stale-context-detection stale context detection">Stale Context Detection</a>
+        <a href="patterns/18-ai-resilience-engineering/token-budget-recovery/" data-name="token-budget-recovery token budget recovery">Token Budget Recovery</a>
+      </div>
+    </details>
+  </div>
+
+  <footer>
+    Static index generated from the repo layout. Source: <a href="https://github.com/ge0rgeself/ai-architecture-enterprise-patterns">ge0rgeself/ai-architecture-enterprise-patterns</a>
+  </footer>
+</div>
+
+<script>
+  const q = document.getElementById('q');
+  const items = [...document.querySelectorAll('details.pattern')];
+  q.addEventListener('input', () => {
+    const term = q.value.trim().toLowerCase();
+    items.forEach(d => {
+      const variants = [...d.querySelectorAll('.variants a')];
+      const patternMatch = d.dataset.name.includes(term);
+      let anyVar = false;
+      variants.forEach(a => {
+        const m = !term || a.dataset.name.includes(term) || patternMatch;
+        a.classList.toggle('hidden', !m);
+        if (m) anyVar = true;
+      });
+      d.classList.toggle('hidden', !(patternMatch || anyVar));
+      if (term && (patternMatch || anyVar)) d.open = true;
+      if (!term) d.open = false;
+    });
+  });
+</script>
+</body>
+</html>
